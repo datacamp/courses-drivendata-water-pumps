@@ -69,28 +69,31 @@ Let's start with loading in the training and testing set into your R environment
 *** =pre_exercise_code
 ```{r,eval=FALSE}
 # no pec
-load("https://s3.amazonaws.com/assets.datacamp.com/production/course_1032/datasets/driven_data.Rdata")
+load(url("http://s3.amazonaws.com/assets.datacamp.com/production/course_1032/datasets/driven_data.Rdata"))
 ```
 
 *** =sample_code
 ```{r,eval=FALSE}
 # Import the training set: train
-
-# Print train and test to the console
+head(train)
+head(test)
+str(test)
 
 ```
 
 *** =solution
 ```{r,eval=FALSE}
 # Import the training set: train
-
+head(train)
+head(test)
+str(test)
 
 *** =sct
 ```{r,eval=FALSE}
 test_error()
 
 msg <- "Do not touch the code that specifies the URLs of the training and test set csvs."
-lapply(c("train_url", "test_url"), test_object, undefined_msg = msg, incorrect_msg = msg)
+lapply(c("train", "test"), test_object, undefined_msg = msg, incorrect_msg = msg)
 
 test_correct({
   test_object("train")
