@@ -6,7 +6,8 @@ description : "In this first chapter you will be introduced to DataCamp's intera
 --- type:NormalExercise xp:100 skills:1
 ## How it works
 
-Welcome to our Kaggle Machine Learning Tutorial. In this tutorial you will explore how to tackle Kaggle's Titanic competition using R and Machine Learning. In case you're new to R, it's recommended that you first take our free [Introduction to R Tutorial](https://www.datacamp.com/courses/free-introduction-to-r). Furthermore, while not required, familiarity with machine learning techniques is a plus so you can get the maximum out of this tutorial.
+Welcome to our tutorial on the Driven Data's Water Pumps challenge. Here you will learn how to get started with the 
+competition using R. In case you're new to R, it's recommended that you first take our free [Introduction to R Tutorial](https://www.datacamp.com/courses/free-introduction-to-r). Furthermore, while not required, familiarity with machine learning techniques is a plus so you can get the maximum out of this tutorial.
 
 In the editor on the right you should type R code to solve the exercises. When you hit the 'Submit Answer' button, every line of code is interpreted and executed by R and you get a message whether or not your code was correct. The output of your R code is shown in the console in the lower right corner. R makes use of the `#` sign to add comments; these lines are not run as R code, so they will not influence your result.
 
@@ -14,7 +15,7 @@ You can also execute R commands straight in the console. This is a good way to e
 
 *** =instructions
 - In the editor on the right there is already some sample code. Can you see which lines are actual R code and which are comments?
-- Add a line of code that calculates the sum of 6 and 12, and hit the 'Submit Answer' button.
+- Add a line of code that calculates the sum of 8 and 15, and hit the 'Submit Answer' button.
 
 *** =hint
 Just add a line of R code that calculates the sum of 6 and 12, just like the example in the sample code!
@@ -26,31 +27,36 @@ Just add a line of R code that calculates the sum of 6 and 12, just like the exa
 
 *** =sample_code
 ```{r eval=FALSE}
-# Calculate 3 + 4
-3 + 4
+# Calculate 3 * 4
+3 * 4
 
-# Calculate 6 + 12
+# Calculate 8 + 15
+
 
 ```
 
 *** =solution
 ```{r eval=FALSE}
 # Calculate 3 + 4
-3 + 4
+3 * 4
 
-# Calculate 6 + 12
-6 + 12
+# Calculate 8 + 15
+8 + 15
 ```
 
 *** =sct
 ```{r eval=FALSE}
-test_output_contains("7", incorrect_msg = "Do not remove the line of R code that calculates the sum of 3 and 4. Instead, just add another line that calculates the sum of 6 and 12.")
-test_output_contains("18", incorrect_msg = "Make sure to add a line of R code, that calculates the sum of 6 and 12. Do not start the line with a `#`, otherwise your R code is not executed!")
+test_output_contains("12", incorrect_msg = "Do not remove the line of R code that calculates the product of 3 and 4. Instead, just add another line that calculates the sum of 8 and 15.")
+test_output_contains("23", incorrect_msg = "Make sure to add a line of R code, that calculates the sum of 8 and 15. Do not start the line with a `#`, otherwise your R code is not executed!")
 success_msg("Awesome! See how the console shows the result of the R code you submitted? Now that you're familiar with the interface, let's get down to R business!")
 ```
 
 --- type:NormalExercise xp:100 skills:1,3
-## Set Sail
+## Data Mining the Water Table
+
+"Can you predict which water pumps are faulty?
+
+Using data from Taarifa and the Tanzanian Ministry of Water, can you predict which pumps are functional, which need some repairs, and which don't work at all? This is an intermediate-level practice competition. Predict one of these three classes based on a number of variables about what kind of pump is operating, when it was installed, and how it is managed. A smart understanding of which waterpoints will fail can improve maintenance operations and ensure that clean, potable water is available to communities across Tanzania."
 
 When the Titanic sank, 1502 of the 2224 passengers and crew got killed. One of the main reasons for this high level of casualties was the lack of lifeboats on this self-proclaimed "unsinkable" ship. 
 
@@ -75,23 +81,48 @@ load(url("http://s3.amazonaws.com/assets.datacamp.com/production/course_1032/dat
 *** =sample_code
 ```{r,eval=FALSE}
 # Import the training set: train
-head(train)
-head(test)
-str(test)
+train_set_values <- read.csv(url("http://s3.amazonaws.com/drivendata/data/7/public/4910797b-ee55-40a7-8668-10efd5c1b960.csv"))
+train_set_values <- read.csv(url("https://s3.amazonaws.com/drivendata/data/7/public/0bf8bc6e-30d0-4c50-956a-603fc693d966.csv"))
+test_set_values <- read.csv(url("https://s3.amazonaws.com/drivendata/data/7/public/702ddfc5-68cd-4d1d-a0de-f5f566f76d91.csv"))
+submission_format <- read.csv(url("https://s3.amazonaws.com/drivendata/data/7/public/SubmissionFormat.csv"))
+
+head(train_set_values)
+head(train_set_labels)
+head(test_set_values)
 
 ```
 
 *** =solution
 ```{r,eval=FALSE}
 # Import the training set: train
-head(train)
-head(test)
-str(test)
+train_set_values <- read.csv(url("http://s3.amazonaws.com/drivendata/data/7/public/4910797b-ee55-40a7-8668-10efd5c1b960.csv"))
+train_set_values <- read.csv(url("https://s3.amazonaws.com/drivendata/data/7/public/0bf8bc6e-30d0-4c50-956a-603fc693d966.csv"))
+test_set_values <- read.csv(url("https://s3.amazonaws.com/drivendata/data/7/public/702ddfc5-68cd-4d1d-a0de-f5f566f76d91.csv"))
+submission_format <- read.csv(url("https://s3.amazonaws.com/drivendata/data/7/public/SubmissionFormat.csv"))
+
+head(train_set_values)
+head(train_set_labels)
+head(test_set_values)
+```
 
 *** =sct
 ```{r,eval=FALSE}
 test_error()
 
+# msg <- "Do not touch the code that specifies the URLs of the training and test set csvs."
+# lapply(c("train", "test"), test_object, undefined_msg = msg, incorrect_msg = msg)
+# 
+# test_correct({
+#   test_object("train")
+#   test_object("test")
+# }, {
+#   test_function("read.csv", args = "file")
+# })
+# 
+# msg <- "Don't forget to have a look at `train` and `test` by printing them out. You can do this simply typing the variable names on a new line."
+# test_output_contains("train", incorrect_msg = msg)
+# test_output_contains("test", incorrect_msg = msg)
+success_msg("Well done! Now that your data is loaded in, let's see if you can understand it.")
 ```
 
 --- type:MultipleChoiceExercise xp:50 skills:1,3
@@ -112,8 +143,11 @@ To see the structure of the `test` variable you can make use of `str(test)`.
 
 *** =pre_exercise_code
 ```{r,eval=FALSE}
-train <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/course/Kaggle/train.csv")
-test <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/course/Kaggle/test.csv")
+train_set_values <- read.csv(url("http://s3.amazonaws.com/drivendata/data/7/public/4910797b-ee55-40a7-8668-10efd5c1b960.csv"))
+train_set_values <- read.csv(url("https://s3.amazonaws.com/drivendata/data/7/public/0bf8bc6e-30d0-4c50-956a-603fc693d966.csv"))
+test_set_values <- read.csv(url("https://s3.amazonaws.com/drivendata/data/7/public/702ddfc5-68cd-4d1d-a0de-f5f566f76d91.csv"))
+submission_format <- read.csv(url("https://s3.amazonaws.com/drivendata/data/7/public/SubmissionFormat.csv"))
+
 ```
 
 *** =sct
