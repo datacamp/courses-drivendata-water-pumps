@@ -1,141 +1,383 @@
 ---
-title       : Introduction to DriveData Water Pumps Data
-description : Import and Inspect the Water Pumps Data Set
+title_meta  : Chapter 1
+title       : Raising anchor
+description : "In this first chapter you will be introduced to DataCamp's interactive interface and the Titanic data set. Once you're familiar with the Kaggle data sets, you make your first predictions using survival rate, gender data, as well as age data."
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1
-## A really bad movie
+--- type:NormalExercise xp:100 skills:1
+## How it works
 
-Have a look at the plot that showed up in the viewer to the right. Which type of movie has the worst rating assigned to it?
+Welcome to our Kaggle Machine Learning Tutorial. In this tutorial you will explore how to tackle Kaggle's Titanic competition using R and Machine Learning. In case you're new to R, it's recommended that you first take our free [Introduction to R Tutorial](https://www.datacamp.com/courses/free-introduction-to-r). Furthermore, while not required, familiarity with machine learning techniques is a plus so you can get the maximum out of this tutorial.
 
-*** =instructions
-- Adventure
-- Action
-- Animation
-- Comedy
+In the editor on the right you should type R code to solve the exercises. When you hit the 'Submit Answer' button, every line of code is interpreted and executed by R and you get a message whether or not your code was correct. The output of your R code is shown in the console in the lower right corner. R makes use of the `#` sign to add comments; these lines are not run as R code, so they will not influence your result.
 
-*** =hint
-Have a look at the plot. Which color does the point with the lowest rating have?
-
-*** =pre_exercise_code
-```{r}
-# The pre exercise code runs code to initialize the user's workspace. You can use it for several things:
-
-# 1. Preload a dataset. The code below will read the csv that is stored at the URL's location.
-# The movies variable will be available in the user's console.
-movies <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/course/introduction_to_r/movies.csv")
-
-# 2. Pre-load packages, so that users don't have to do this manually.
-library(ggplot2)
-
-# 3. Create a plot in the viewer, that students can check out while reading the exercise
-ggplot(movies, aes(x = runtime, y = rating, col = genre)) + geom_point()
-```
-
-*** =sct
-```{r}
-# The sct section defines the Submission Correctness Tests (SCTs) used to
-# evaluate the student's response. All functions used here are defined in the 
-# testwhat R package
-
-msg_bad <- "That is not correct!"
-msg_success <- "Exactly! There seems to be a very bad action movie in the dataset."
-
-# Use test_mc() to grade multiple choice exercises. 
-# Pass the correct option (Action, option 2 in the instructions) to correct.
-# Pass the feedback messages, both positive and negative, to feedback_msgs in the appropriate order.
-test_mc(correct = 2, feedback_msgs = c(msg_bad, msg_success, msg_bad, msg_bad)) 
-```
-
---- type:NormalExercise lang:r xp:100 skills:1
-## More movies
-
-In the previous exercise, you saw a dataset about movies. In this exercise, we'll have a look at yet another dataset about movies!
-
-A dataset with a selection of movies, `movie_selection`, is available in the workspace.
+You can also execute R commands straight in the console. This is a good way to experiment with R code, as your submission is not checked for correctness.
 
 *** =instructions
-- Check out the structure of `movie_selection`.
-- Select movies with a rating of 5 or higher. Assign the result to `good_movies`.
-- Use `plot()` to  plot `good_movies$Run` on the x-axis, `good_movies$Rating` on the y-axis and set `col` to `good_movies$Genre`.
+- In the editor on the right there is already some sample code. Can you see which lines are actual R code and which are comments?
+- Add a line of code that calculates the sum of 6 and 12, and hit the 'Submit Answer' button.
 
 *** =hint
-- Use `str()` for the first instruction.
-- For the second instruction, you should use `...[movie_selection$Rating >= 5, ]`.
-- For the plot, use `plot(x = ..., y = ..., col = ...)`. 
+Just add a line of R code that calculates the sum of 6 and 12, just like the example in the sample code!
 
 *** =pre_exercise_code
-```{r}
-# Pre-load a package in the workspace
-library(MindOnStats)
-
-# You can prepare the data before the student starts:
-data(Movies)
-movie_selection <- Movies[Movies$Genre %in% c("action", "animated", "comedy"),c("Genre", "Rating", "Run")]
-
-# You can also clean up data so that it's not available in the student's workspace anymore:
-rm(Movies)
+```{r eval=FALSE}
+# no pec
 ```
 
 *** =sample_code
-```{r}
-# movie_selection is available in your workspace
+```{r eval=FALSE}
+# Calculate 3 + 4
+3 + 4
 
-# Check out the structure of movie_selection
-
-
-# Select movies that have a rating of 5 or higher: good_movies
-
-
-# Plot Run (i.e. run time) on the x axis, Rating on the y axis, and set the color using Genre
+# Calculate 6 + 12
 
 ```
 
 *** =solution
-```{r}
-# movie_selection is available in your workspace
+```{r eval=FALSE}
+# Calculate 3 + 4
+3 + 4
 
-# Check out the structure of movie_selection
-str(movie_selection)
-
-# Select movies that have a rating of 5 or higher: good_movies
-good_movies <- movie_selection[movie_selection$Rating >= 5, ]
-
-# Plot Run (i.e. run time) on the x axis, Rating on the y axis, and set the color using Genre
-plot(good_movies$Run, good_movies$Rating, col = good_movies$Genre)
+# Calculate 6 + 12
+6 + 12
 ```
 
 *** =sct
-```{r}
-# The sct section defines the Submission Correctness Tests (SCTs) used to
-# evaluate the student's response. All functions used here are defined in the 
-# testwhat R package. Documentation can also be found at github.com/datacamp/testwhat/wiki
+```{r eval=FALSE}
+test_output_contains("7", incorrect_msg = "Do not remove the line of R code that calculates the sum of 3 and 4. Instead, just add another line that calculates the sum of 6 and 12.")
+test_output_contains("18", incorrect_msg = "Make sure to add a line of R code, that calculates the sum of 6 and 12. Do not start the line with a `#`, otherwise your R code is not executed!")
+success_msg("Awesome! See how the console shows the result of the R code you submitted? Now that you're familiar with the interface, let's get down to R business!")
+```
 
-# Test whether the function str is called with the correct argument, object
-# If it is not called, print something informative
-# If it is called, but called incorrectly, print something else
-test_function("str", args = "object",
-              not_called_msg = "You didn't call `str()`!",
-              incorrect_msg = "You didn't call `str(object = ...)` with the correct argument, `object`.")
+--- type:NormalExercise xp:100 skills:1,3
+## Set Sail
 
-# Test the object, good_movies
-# Notice that we didn't define any feedback here, this will cause automatically 
-# generated feedback to be given to the student in case of an incorrect submission
-test_object("good_movies")
+When the Titanic sank, 1502 of the 2224 passengers and crew got killed. One of the main reasons for this high level of casualties was the lack of lifeboats on this self-proclaimed "unsinkable" ship. 
 
-# Test whether the student correctly used plot()
-# Again, we use the automatically generated feedback here
-test_function("plot", args = "x")
-test_function("plot", args = "y")
-test_function("plot", args = "col")
+Those that have seen the movie know that some individuals were more likely to survive the sinking (lucky Rose) than others (poor Jack). In this course you will learn how to apply machine learning techniques to predict a passenger's chance of surviving using R.   
 
-# Alternativeley, you can use test_function() like this
-# test_function("plot", args = c("x", "y", "col"))
+Let's start with loading in the training and testing set into your R environment. You will use the training set to build your model, and the test set to validate it. The data is stored on the web as `csv` files; their URLs are already available as character strings in the sample code. You can load this data with the `read.csv()` function: simply pass the URL.
 
-# It's always smart to include the following line of code at the end of your SCTs
-# It will check whether executing the student's code resulted in an error, 
-# and if so, will cause the exercise to fail
+*** =instructions
+- Load the [training set](http://s3.amazonaws.com/assets.datacamp.com/course/Kaggle/train.csv) and [test set](http://s3.amazonaws.com/assets.datacamp.com/course/Kaggle/test.csv), and assign these to two variables: `train` and `test`.
+- Print `train` and `test` out to the console to have a look.
+
+*** =hint
+- You can load in the training set with `train <- read.csv(train_url)`
+- To print a variable to the console, simply type the name of the variable on a new line.
+
+*** =pre_exercise_code
+```{r,eval=FALSE}
+# no pec
+load("https://s3.amazonaws.com/assets.datacamp.com/production/course_1032/datasets/driven_data.Rdata")
+```
+
+*** =sample_code
+```{r,eval=FALSE}
+# Import the training set: train
+
+# Print train and test to the console
+
+```
+
+*** =solution
+```{r,eval=FALSE}
+# Import the training set: train
+
+
+*** =sct
+```{r,eval=FALSE}
 test_error()
 
-# Final message the student will see upon completing the exercise
-success_msg("Good work!")
+msg <- "Do not touch the code that specifies the URLs of the training and test set csvs."
+lapply(c("train_url", "test_url"), test_object, undefined_msg = msg, incorrect_msg = msg)
+
+test_correct({
+  test_object("train")
+  test_object("test")
+}, {
+  test_function("read.csv", args = "file")
+})
+
+msg <- "Don't forget to have a look at `train` and `test` by printing them out. You can do this simply typing the variable names on a new line."
+test_output_contains("train", incorrect_msg = msg)
+test_output_contains("test", incorrect_msg = msg)
+success_msg("Well done! Now that your data is loaded in, let's see if you can understand it.")
+```
+
+--- type:MultipleChoiceExercise xp:50 skills:1,3
+## Understanding your data
+
+Before starting with the actual analysis, it's important to understand the structure of your data. Both `test` and `train` are data frames, R's way of representing a dataset. You can easily explore a data frame using the function `str()`. `str()` gives you information such as the data types in the data frame (e.g. `int` for integer), the number of observations, and the number of variables.
+
+The training and test set are already available in the workspace, as `train` and `test`. Apply `str()` to the training set. Which of the following statements is correct?
+
+*** =instructions
+- The training set has 891 observations and 12 variables.
+- The training set has 418 observations and 11 variables.
+- The testing set has 891 observations and 11 variables.
+- The testing set has 418 observations and 12 variables.
+  
+*** =hint
+To see the structure of the `test` variable you can make use of `str(test)`.
+
+*** =pre_exercise_code
+```{r,eval=FALSE}
+train <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/course/Kaggle/train.csv")
+test <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/course/Kaggle/test.csv")
+```
+
+*** =sct
+```{r,eval=FALSE}
+msg1 <- "Great job! In case you want to learn more on data frames, <a href='https://www.datacamp.com/courses/free-introduction-to-r'>check out the data frames chapter in DataCamp's introduction to R course.</a>"
+msg2 <- "Wrong, try again. Maybe have a look at the hint."
+msg3 <- "Not so good... Maybe have a look at the hint."
+msg4 <- "Incorrect. Maybe have a look at the hint."
+test_mc(correct = 1, feedback_msgs = c(msg1, msg2, msg3, msg4))
+```
+
+--- type:NormalExercise xp:100 skills:1
+## Rose vs Jack, or Female vs Male
+
+How many people in your training set survived the disaster with the Titanic? To see this, you can use the `table()` command in combination with the `$`-operator to select a single column of a data frame:
+
+```
+# absolute numbers
+table(train$Survived) 
+
+# percentages
+prop.table(table(train$Survived))
+``` 
+
+If you run these commands in the console, you'll see that 549 individuals died (62%) and 342 survived (38%). A simple way prediction heuristic could be: "majority wins". This would mean that you will predict every unseen observation to not survive.
+
+In general, the `table()` command can help you to explore what variables have predictive value. For example, maybe gender could play a role as well? You can explore this using the `table()` function for a two-way comparison on the number of males and females that survived, with this syntax:
+
+```
+table(train$Sex, train$Survived)
+```
+
+To get proportions, you can again wrap `prop.table()` around `table()`, but you'll have to specify whether you want row-wise or column-wise proportions. This is done by setting the second argument of `prop.table()`, called `margin`, to 1 or 2, respectively.
+
+*** =instructions
+- Calculate the survival rates in absolute numbers using `table()` on `train`.
+- Calculate the survival rates as proportions by wrapping `prop.table()` around the previous `table()` call.
+- Do a two-way comparison on the number of males and females that survived, in absolute numbers. Again, use the `train` data frame.
+- Convert the numbers to row-wise proportions.
+
+*** =hint
+- The code for the first, second and third instruction is already given in the assignment!
+- For the fourth instruction, wrap `prop.table()` around the `table()` call for the third instruction. Make sure to set the second argument of `prop.table()` correctly!
+
+*** =pre_exercise_code
+```{r,eval=FALSE}
+train <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/course/Kaggle/train.csv")
+test <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/course/Kaggle/test.csv")
+```
+
+*** =sample_code
+```{r,eval=FALSE}
+# Your train and test set are still loaded
+str(train)
+str(test)
+
+# Passengers that survived vs passengers that passed away
+
+
+# As proportions
+
+  
+# Males & females that survived vs males & females that passed away
+
+
+# As row-wise proportions
+
+```
+
+*** =solution
+```{r,eval=FALSE}
+# Your train and test set are still loaded
+str(train)
+str(test)
+
+# Passengers that survived vs passengers that passed away
+table(train$Survived)
+
+# As proportions
+prop.table(table(train$Survived))
+  
+# Males & females that survived vs males & females that passed away
+table(train$Sex, train$Survived)
+
+# As row-wise proportions
+prop.table(table(train$Sex, train$Survived), 1)
+```
+
+*** =sct
+```{r,eval=FALSE}
+test_error()
+msg <- "Have you correctly coded the table? Do not forget to provide the table that shows the number of survivors vs passed away in percentages."
+test_output_contains("table(train$Survived)", 
+                     incorrect_msg = paste(msg, "shows the number of survivors vs passed away?"))
+test_output_contains("prop.table(table(train$Survived))", 
+                     incorrect_msg = paste(msg, "shows the number of survivors vs passed away as proportions?"))
+test_output_contains("table(train$Sex, train$Survived)", 
+                     incorrect_msg =  paste(msg, "shows the number of survivors vs passed away, taking into account gender."))
+test_output_contains("prop.table(table(train$Sex, train$Survived),1)", 
+                     incorrect_msg = paste(msg, "shows the number of survivors vs passed away in proportions, taking into account gender."))
+success_msg("Well done! It looks like it makes sense to predict that all females will survive, and all men will die.")
+```
+
+--- type:NormalExercise xp:100 skills:1
+## Does age play a role?
+
+Another variable that could influence survival is age; it's probable children were saved first. You can test this by creating a new column with a categorical variable `child`. `child` will take the value 1 in case age is <18, and a value of 0 in case age is >=18. 
+
+To add this new variable you need to do two things (i) create a new column, and (ii) provide the values for each observation (i.e., row) based on the age of the passenger.
+
+Adding a new column with R is easy and can be done via the `$`-operator. For example, 
+
+```
+train$new <- 10
+``` 
+
+would create a `new` column in the `train` data frame with the value 10 for each observation. 
+
+To set the values based on the age of the passenger, you make use of a boolean test inside the square bracket operator. With the `[]`-operator you create a subset of rows and assign a value to a certain variable of that subset of observations. For example,
+
+```
+train$new[train$Survived == 1] <- 0
+```
+
+would give a value of 0 to the variable `new` for the subset of passengers that survived the disaster.   
+
+*** =instructions
+- Create a new column `Child` in the `train` data frame that takes the value `NA`, if the passenger's age is `NA`, `1` when the passenger is < 18 years and the value `0` when the passenger is >= 18 years.
+- Do a two-way comparison on the number of children vs adults that survived, in row-wise proportions.
+
+*** =hint
+Suppose you wanted to add a new column `clothes` to the `test` set and give all males the value `"pants"` and the others `"skirt"`:
+```
+test$clothes <- "skirt"
+test$clothes[test$Sex == 'male'] <- "pants"
+```
+
+*** =pre_exercise_code
+```{r,eval=FALSE}
+train <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/course/Kaggle/train.csv")
+test <- read.csv(url("http://s3.amazonaws.com/assets.datacamp.com/course/Kaggle/test.csv"))
+```
+
+*** =sample_code
+```{r,eval=FALSE}
+# Your train and test set are still loaded in
+str(train)
+str(test)
+
+# Create the column child, and indicate whether child or no child
+
+
+# Two-way comparison
+
+
+```
+
+*** =solution
+```{r,eval=FALSE}
+# Your train and test set are still loaded in
+str(train)
+str(test)
+
+# Create the column child, and indicate whether child or no child
+train$Child <- NA
+train$Child[train$Age < 18] <- 1
+train$Child[train$Age >= 18] <- 0
+
+# Two-way comparison
+prop.table(table(train$Child, train$Survived), 1)
+```
+
+*** =sct
+```{r,eval=FALSE}
+test_data_frame("train", columns = "Child",
+                undefined_msg = "Do not remove the variable `train`, it has already been created for you.",
+                undefined_cols_msg = "Make sure to specify the column `Child` inside `train`.",
+                incorrect_msg = paste("It looks like you didn't correctly set all values of the `Child` column.",
+                                      "You'll have to do the explained subsetting operation twice!"))
+
+test_object("train", incorrect_msg = paste("You have correctly specified the `Child` column inside `train`,",
+                                           "but there is still something wrong. Make sure not to add or edit any other columns!"))
+
+test_output_contains("prop.table(table(train$Child, train$Survived),1)", incorrect_msg = "Do not forget to provide the table that shows the number of survivors vs passed away in row-wise proportions, taking into account age. Inside `table()`, `train$Child` comes first!. Don't forget to wrap `prop.table()` around it.")
+
+success_msg("While less obviously than gender, age also seems to have an impact on survival.")
+```
+
+--- type:NormalExercise xp:100 skills: 1,6
+## Making your first predictions
+
+In one of the previous exercises you discovered that in your training set, females had over a 50% chance of surviving and males had less than a 50% chance of surviving. Hence, you could use this information for your first prediction: all females in the test set survive and all males in the test set die. 
+
+You use your test set for validating your predictions. You might have seen that, contrary to the training set, the test set has no `Survived` column. You add such a column using your predicted values. Next, when uploading your results, Kaggle will use this variable (= your predictions) to score your performance. 
+
+*** =instructions 
+- Create a variable `test_one`, identical to dataset `test`
+- Add an additional column, `Survived`, that you initialize to zero.
+- Use vector subsetting like in the previous exercise to set the value of `Survived` to 1 for observations whose `Sex` equals `"female"`.
+
+*** =hint
+- To create a new variable, `y`, that is a copy of `x`, you can use `y <- x`.
+- To initialize a new column `a` in a data frame `df` to zero, you can use `df$a <- 0`.
+- Have another look at the previous exercise if you're struggling with the third instruction.
+
+*** =pre_exercise_code
+```{r,eval=FALSE}
+train <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/course/Kaggle/train.csv")
+test <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/course/Kaggle/test.csv")
+```
+
+*** =sample_code
+```{r,eval=FALSE}
+# Your train and test set are still loaded in
+str(train)
+str(test)
+
+# Create a copy of test: test_one
+
+
+# Initialize a Survived column to 0
+
+
+# Set Survived to 1 if Sex equals "female"
+
+```
+
+*** =solution
+```{r,eval=FALSE}
+# Your train and test set are still loaded in
+str(train)
+str(test)
+
+# Create a copy of test: test_one
+test_one <- test
+
+# Initialize a Survived column to 0
+test_one$Survived <- 0
+
+# Set Survived to 1 if Sex equals "female"
+test_one$Survived[test$Sex == "female"] <- 1
+```
+
+*** =sct
+```{r,eval=FALSE}
+msg <- "Do not remove or change the contents of `test`! You should work with a copy of `test`, namely `test_one`."
+test_object("test", undefined_msg = msg, incorrect_msg = msg)
+
+test_data_frame("test_one", "Survived",
+                undefined_cols_msg = "Make sure to define the column `Survived` inside `test_one`.",
+                incorrect_msg = "The column `Survived` inside `test_one` was not specified correctly. Check your code or make use of the hint.")
+test_object("test_one", incorrect_msg = paste("You correctly set the `Survived` variable of the object `test_one`,",
+                                              "but there is still something wrong. Make sure not to add or edit any other columns!"))
+
+success_msg("Well done! If you want, you can already submit these first predictions to Kaggle [by uploading this csv file](http://s3.amazonaws.com/assets.datacamp.com/course/Kaggle/ch1_ex4_solution/my_solution.csv). In the next chapter you will learn how to make more advanced predictions and create your own .csv file from R.")
 ```
