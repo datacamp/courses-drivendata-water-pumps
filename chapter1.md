@@ -75,7 +75,7 @@ Let's start with loading in the training and testing set into your R environment
 *** =pre_exercise_code
 ```{r,eval=FALSE}
 # no pec
-load(url("http://s3.amazonaws.com/assets.datacamp.com/production/course_1032/datasets/driven_data.Rdata"))
+
 ```
 
 *** =sample_code
