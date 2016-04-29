@@ -92,20 +92,6 @@ str(test)
 ```{r,eval=FALSE}
 test_error()
 
-msg <- "Do not touch the code that specifies the URLs of the training and test set csvs."
-lapply(c("train", "test"), test_object, undefined_msg = msg, incorrect_msg = msg)
-
-test_correct({
-  test_object("train")
-  test_object("test")
-}, {
-  test_function("read.csv", args = "file")
-})
-
-msg <- "Don't forget to have a look at `train` and `test` by printing them out. You can do this simply typing the variable names on a new line."
-test_output_contains("train", incorrect_msg = msg)
-test_output_contains("test", incorrect_msg = msg)
-success_msg("Well done! Now that your data is loaded in, let's see if you can understand it.")
 ```
 
 --- type:MultipleChoiceExercise xp:50 skills:1,3
