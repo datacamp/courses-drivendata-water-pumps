@@ -124,8 +124,9 @@ msg <- "Do not change the code that specifies the URLs of the 3 csvs. You can re
 lapply(c("train_values_url", "train_labels_url", "test_values_url"), test_object, undefined_msg = msg, incorrect_msg = msg)
 
 test_correct({
-  test_object("train")
-  test_object("test")
+  test_object("train_values")
+  test_object("train_lables")
+  test_object("test_values")
 }, {
   test_function("read.csv", args = "file")
 })
