@@ -153,11 +153,7 @@ To see the structure of the `test` variable you can make use of `str(test)`.
 
 *** =pre_exercise_code
 ```{r,eval=FALSE}
-train_set_values <- read.csv(url("http://s3.amazonaws.com/drivendata/data/7/public/4910797b-ee55-40a7-8668-10efd5c1b960.csv"))
-train_set_values <- read.csv(url("http://s3.amazonaws.com/drivendata/data/7/public/0bf8bc6e-30d0-4c50-956a-603fc693d966.csv"))
-test_set_values <- read.csv(url("http://s3.amazonaws.com/drivendata/data/7/public/702ddfc5-68cd-4d1d-a0de-f5f566f76d91.csv"))
-submission_format <- read.csv(url("http://s3.amazonaws.com/drivendata/data/7/public/SubmissionFormat.csv"))
-
+load("http://s3.amazonaws.com/assets.datacamp.com/production/course_1032/datasets/driven_data_ex3.Rdata")
 ```
 
 *** =sct
