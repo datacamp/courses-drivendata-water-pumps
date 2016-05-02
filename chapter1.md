@@ -58,15 +58,14 @@ Can you predict which water pumps are faulty?
 
 Using data from Taarifa and the Tanzanian Ministry of Water, can you predict which pumps are functional, which need some repairs, and which don't work at all? This is an intermediate-level practice competition. Predict one of these three classes based on a number of variables about what kind of pump is operating, when it was installed, and how it is managed. A smart understanding of which waterpoints will fail can improve maintenance operations and ensure that clean, potable water is available to communities across Tanzania.
 
-Let's start with loading in the training and testing set into your R environment. You will use the training set to build your model, and the test set to validate it. The data is stored on the web as `csv` files; their URLs are already available as character strings in the sample code. You can load this data with the `read.csv()` function: simply pass the URL.
+Let's start with loading in the training and testing set into your R environment. You will use the training set to build your model, and the test set to validate it. The URLs for the 3 `csv` files are already available as variables in the sample code. You can load this data with the `read.csv()` function: simply pass the defined URL variables. We will inspect these new variables in the following exercises.
 
 *** =instructions
-- Load the [training set](http://s3.amazonaws.com/assets.datacamp.com/course/Kaggle/train.csv) and [test set](http://s3.amazonaws.com/assets.datacamp.com/course/Kaggle/test.csv), and assign these to two variables: `train` and `test`.
-- Print `train` and `test` out to the console to have a look.
+- Load the [training set values](http://s3.amazonaws.com/drivendata/data/7/public/4910797b-ee55-40a7-8668-10efd5c1b960.csv), [training set labels](http://s3.amazonaws.com/drivendata/data/7/public/0bf8bc6e-30d0-4c50-956a-603fc693d966.csv), and [test set values](http://s3.amazonaws.com/drivendata/data/7/public/702ddfc5-68cd-4d1d-a0de-f5f566f76d91.csv) and assign these to three variables: `train_set_values`, `train_Set_labels` and `test_set_values`.
 
 *** =hint
-- You can load in the training set with `train <- read.csv(train_url)`
-- To print a variable to the console, simply type the name of the variable on a new line.
+- An example of proper usage of `read.csv` is provided for you in the sample code!
+- Use similar code to assign `train_set_values` and `test_set_values`
 
 *** =pre_exercise_code
 ```{r,eval=FALSE}
@@ -120,21 +119,20 @@ test_set_values <- read.csv(test_set_values_url)
 
 *** =sct
 ```{r,eval=FALSE}
-test_error()
 
-# msg <- "Do not touch the code that specifies the URLs of the training and test set csvs."
-# lapply(c("train", "test"), test_object, undefined_msg = msg, incorrect_msg = msg)
-# 
-# test_correct({
-#   test_object("train")
-#   test_object("test")
-# }, {
-#   test_function("read.csv", args = "file")
-# })
-# 
-# msg <- "Don't forget to have a look at `train` and `test` by printing them out. You can do this simply typing the variable names on a new line."
-# test_output_contains("train", incorrect_msg = msg)
-# test_output_contains("test", incorrect_msg = msg)
+
+
+msg <- "Do not change the code that specifies the URLs of the 3 csvs. You can reset the sample code to its original state by pressing the reset button next to 'Submit Answer'."
+lapply(c("train_set_labels_url","train_set_values_url", "test_set_values_url"), test_object, undefined_msg = msg, incorrect_msg = msg)
+
+test_correct({
+  test_object("train")
+  test_object("test")
+}, {
+  test_function("read.csv", args = "file")
+})
+
+test_error()
 success_msg("Well done! Now that your data is loaded in, let's see if you can understand it.")
 ```
 
