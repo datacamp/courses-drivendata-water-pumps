@@ -54,13 +54,9 @@ success_msg("Awesome! See how the console shows the result of the R code you sub
 --- type:NormalExercise xp:100 skills:1,3
 ## Data Mining the Water Table
 
-"Can you predict which water pumps are faulty?
+Can you predict which water pumps are faulty?
 
-Using data from Taarifa and the Tanzanian Ministry of Water, can you predict which pumps are functional, which need some repairs, and which don't work at all? This is an intermediate-level practice competition. Predict one of these three classes based on a number of variables about what kind of pump is operating, when it was installed, and how it is managed. A smart understanding of which waterpoints will fail can improve maintenance operations and ensure that clean, potable water is available to communities across Tanzania."
-
-When the Titanic sank, 1502 of the 2224 passengers and crew got killed. One of the main reasons for this high level of casualties was the lack of lifeboats on this self-proclaimed "unsinkable" ship. 
-
-Those that have seen the movie know that some individuals were more likely to survive the sinking (lucky Rose) than others (poor Jack). In this course you will learn how to apply machine learning techniques to predict a passenger's chance of surviving using R.   
+Using data from Taarifa and the Tanzanian Ministry of Water, can you predict which pumps are functional, which need some repairs, and which don't work at all? This is an intermediate-level practice competition. Predict one of these three classes based on a number of variables about what kind of pump is operating, when it was installed, and how it is managed. A smart understanding of which waterpoints will fail can improve maintenance operations and ensure that clean, potable water is available to communities across Tanzania.
 
 Let's start with loading in the training and testing set into your R environment. You will use the training set to build your model, and the test set to validate it. The data is stored on the web as `csv` files; their URLs are already available as character strings in the sample code. You can load this data with the `read.csv()` function: simply pass the URL.
 
@@ -80,29 +76,46 @@ Let's start with loading in the training and testing set into your R environment
 
 *** =sample_code
 ```{r,eval=FALSE}
-# Import the training set: train
-train_set_values <- read.csv(url("http://s3.amazonaws.com/drivendata/data/7/public/4910797b-ee55-40a7-8668-10efd5c1b960.csv"))
-train_set_labels <- read.csv(url("http://s3.amazonaws.com/drivendata/data/7/public/0bf8bc6e-30d0-4c50-956a-603fc693d966.csv"))
-test_set_values <- read.csv(url("http://s3.amazonaws.com/drivendata/data/7/public/702ddfc5-68cd-4d1d-a0de-f5f566f76d91.csv"))
-submission_format <- read.csv(url("http://s3.amazonaws.com/drivendata/data/7/public/SubmissionFormat.csv"))
+# Define train_set_values_url
+train_set_values_url <- url("http://s3.amazonaws.com/drivendata/data/7/public/4910797b-ee55-40a7-8668-10efd5c1b960.csv")
 
-head(train_set_values)
-head(train_set_labels)
-head(test_set_values)
+# Import train_set_values
+train_set_values <- read.csv(train_set_values_url)
+
+# Define train_set_labels_url
+train_set_labels_url <- url("http://s3.amazonaws.com/drivendata/data/7/public/0bf8bc6e-30d0-4c50-956a-603fc693d966.csv")
+
+# Import train_set_labels
+train_set_labels <- 
+
+# Define test_set_values_url
+test_set_values_url <- url("http://s3.amazonaws.com/drivendata/data/7/public/702ddfc5-68cd-4d1d-a0de-f5f566f76d91.csv")
+
+# Import test_set_values
+test_set_values <- 
 
 ```
 
 *** =solution
 ```{r,eval=FALSE}
-# Import the training set: train
-train_set_values <- read.csv(url("http://s3.amazonaws.com/drivendata/data/7/public/4910797b-ee55-40a7-8668-10efd5c1b960.csv"))
-train_set_labels <- read.csv(url("http://s3.amazonaws.com/drivendata/data/7/public/0bf8bc6e-30d0-4c50-956a-603fc693d966.csv"))
-test_set_values <- read.csv(url("http://s3.amazonaws.com/drivendata/data/7/public/702ddfc5-68cd-4d1d-a0de-f5f566f76d91.csv"))
-submission_format <- read.csv(url("http://s3.amazonaws.com/drivendata/data/7/public/SubmissionFormat.csv"))
+# Define train_set_values_url
+train_set_values_url <- url("http://s3.amazonaws.com/drivendata/data/7/public/4910797b-ee55-40a7-8668-10efd5c1b960.csv")
 
-head(train_set_values)
-head(train_set_labels)
-head(test_set_values)
+# Import train_set_values
+train_set_values <- read.csv(train_set_values_url)
+
+# Define train_set_labels_url
+train_set_labels_url <- url("http://s3.amazonaws.com/drivendata/data/7/public/0bf8bc6e-30d0-4c50-956a-603fc693d966.csv")
+
+# Import train_set_labels
+train_set_labels <- read.csv(train_set_values_url)
+
+# Define test_set_values_url
+test_set_values_url <- url("http://s3.amazonaws.com/drivendata/data/7/public/702ddfc5-68cd-4d1d-a0de-f5f566f76d91.csv")
+
+# Import test_set_values
+test_set_values <- read.csv(test_set_values_url)
+
 ```
 
 *** =sct
