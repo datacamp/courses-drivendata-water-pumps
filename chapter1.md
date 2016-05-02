@@ -3,7 +3,7 @@ title_meta  : Chapter 1
 title       : Raising anchor
 description : "In this first chapter you will be introduced to DataCamp's interactive interface and the Titanic data set. Once you're familiar with the Kaggle data sets, you make your first predictions using survival rate, gender data, as well as age data."
 
---- type:NormalExercise xp:100 skills:1
+--- type:NormalExercise xp:100 skills:1 key:a1ddff3dced9bc827f83d0a600e31649e732768b
 ## How it works
 
 Welcome to our tutorial on the Driven Data's Water Pumps challenge. Here you will learn how to get started with the 
@@ -51,7 +51,7 @@ test_output_contains("23", incorrect_msg = "Make sure to add a line of R code, t
 success_msg("Awesome! See how the console shows the result of the R code you submitted? Now that you're familiar with the interface, let's get down to R business!")
 ```
 
---- type:NormalExercise xp:100 skills:1,3
+--- type:NormalExercise xp:100 skills:1,3 key:5ac7cf5cee32ae6b323cfb298ebfae05fc4e7bf4
 ## Data Mining the Water Table
 
 Can you predict which water pumps are faulty?
@@ -136,7 +136,7 @@ test_error()
 success_msg("Well done! Now that your data is loaded in, let's see if you can understand it.")
 ```
 
---- type:MultipleChoiceExercise xp:50 skills:1,3
+--- type:MultipleChoiceExercise xp:50 skills:1,3 key:5ba0cacb49934cf4d62a10a7fb9287f6fef57a1e
 ## Understanding your data
 
 Before starting with the actual analysis, it's important to understand the structure of your data. Both `test` and `train` are data frames, R's way of representing a dataset. You can easily explore a data frame using the function `str()`. `str()` gives you information such as the data types in the data frame (e.g. `int` for integer), the number of observations, and the number of variables.
@@ -170,7 +170,7 @@ msg4 <- "Incorrect. Maybe have a look at the hint."
 test_mc(correct = 1, feedback_msgs = c(msg1, msg2, msg3, msg4))
 ```
 
---- type:NormalExercise xp:100 skills:1
+--- type:NormalExercise xp:100 skills:1 key:aa1b373e5055f70cb212be1eb593927ff1d48cfa
 ## Rose vs Jack, or Female vs Male
 
 How many people in your training set survived the disaster with the Titanic? To see this, you can use the `table()` command in combination with the `$`-operator to select a single column of a data frame:
@@ -262,7 +262,7 @@ test_output_contains("prop.table(table(train$Sex, train$Survived),1)",
 success_msg("Well done! It looks like it makes sense to predict that all females will survive, and all men will die.")
 ```
 
---- type:NormalExercise xp:100 skills:1
+--- type:NormalExercise xp:100 skills:1 key:aff8037b847c2c5c2e7f1db185813bf6c0769d3a
 ## Does age play a role?
 
 Another variable that could influence survival is age; it's probable children were saved first. You can test this by creating a new column with a categorical variable `child`. `child` will take the value 1 in case age is <18, and a value of 0 in case age is >=18. 
@@ -347,7 +347,7 @@ test_output_contains("prop.table(table(train$Child, train$Survived),1)", incorre
 success_msg("While less obviously than gender, age also seems to have an impact on survival.")
 ```
 
---- type:NormalExercise xp:100 skills: 1,6
+--- type:NormalExercise xp:100 skills: 1,6 key:5da127ed17a54aa18d130798b9662f7e21b14cd1
 ## Making your first predictions
 
 In one of the previous exercises you discovered that in your training set, females had over a 50% chance of surviving and males had less than a 50% chance of surviving. Hence, you could use this information for your first prediction: all females in the test set survive and all males in the test set die. 
