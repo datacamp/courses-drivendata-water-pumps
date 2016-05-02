@@ -123,7 +123,7 @@ test_set_values <- read.csv(test_set_values_url)
 
 
 msg <- "Do not change the code that specifies the URLs of the 3 csvs. You can reset the sample code to its original state by pressing the reset button next to 'Submit Answer'."
-lapply(c("train_set_labels_url","train_set_values_url", "test_set_values_url"), test_object, undefined_msg = msg, incorrect_msg = msg)
+lapply(c("train_set_values_url", "train_set_labels_url", "test_set_values_url"), test_object, undefined_msg = msg, incorrect_msg = msg)
 
 test_correct({
   test_object("train")
