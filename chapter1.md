@@ -153,7 +153,7 @@ To see the structure of the `test` variable you can make use of `str(test)`.
 
 *** =pre_exercise_code
 ```{r,eval=FALSE}
-load("https://s3.amazonaws.com/assets.datacamp.com/production/course_1032/datasets/driven_data_ex3.Rdata")
+load(url("https://s3.amazonaws.com/assets.datacamp.com/production/course_1032/datasets/driven_data_ex3.Rdata"))
 ```
 
 *** =sct
