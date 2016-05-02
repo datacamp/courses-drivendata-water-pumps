@@ -61,7 +61,7 @@ Using data from Taarifa and the Tanzanian Ministry of Water, can you predict whi
 Let's start with loading in the training and testing set into your R environment. You will use the training set to build your model, and the test set to validate it. The URLs for the 3 `csv` files are already available as variables in the sample code. You can load this data with the `read.csv()` function: simply pass the defined URL variables. We will inspect these new variables in the following exercises.
 
 *** =instructions
-- Load the [training set values](http://s3.amazonaws.com/drivendata/data/7/public/4910797b-ee55-40a7-8668-10efd5c1b960.csv), [training set labels](http://s3.amazonaws.com/drivendata/data/7/public/0bf8bc6e-30d0-4c50-956a-603fc693d966.csv), and [test set values](http://s3.amazonaws.com/drivendata/data/7/public/702ddfc5-68cd-4d1d-a0de-f5f566f76d91.csv) and assign these to three variables: `train_set_values`, `train_Set_labels` and `test_set_values`.
+- Load the [training set values](http://s3.amazonaws.com/drivendata/data/7/public/4910797b-ee55-40a7-8668-10efd5c1b960.csv), [training set labels](http://s3.amazonaws.com/drivendata/data/7/public/0bf8bc6e-30d0-4c50-956a-603fc693d966.csv), and [test set values](http://s3.amazonaws.com/drivendata/data/7/public/702ddfc5-68cd-4d1d-a0de-f5f566f76d91.csv) and assign these to three variables: `train_values`, `train_labels` and `test_values`.
 
 *** =hint
 - An example of proper usage of `read.csv` is provided for you in the sample code!
@@ -75,55 +75,53 @@ Let's start with loading in the training and testing set into your R environment
 
 *** =sample_code
 ```{r,eval=FALSE}
-# Define train_set_values_url
-train_set_values_url <- url("http://s3.amazonaws.com/drivendata/data/7/public/4910797b-ee55-40a7-8668-10efd5c1b960.csv")
+# Define train_values_url
+train_values_url <- "http://s3.amazonaws.com/drivendata/data/7/public/4910797b-ee55-40a7-8668-10efd5c1b960.csv"
 
-# Import train_set_values
-train_set_values <- read.csv(train_set_values_url)
+# Import train_values
+train_values <- read.csv(url(train_values_url))
 
-# Define train_set_labels_url
-train_set_labels_url <- url("http://s3.amazonaws.com/drivendata/data/7/public/0bf8bc6e-30d0-4c50-956a-603fc693d966.csv")
+# Define train_labels_url
+train_labels_url <- "http://s3.amazonaws.com/drivendata/data/7/public/0bf8bc6e-30d0-4c50-956a-603fc693d966.csv"
 
-# Import train_set_labels
-train_set_labels <- 
+# Import train_labels
+train_labels <- 
 
-# Define test_set_values_url
-test_set_values_url <- url("http://s3.amazonaws.com/drivendata/data/7/public/702ddfc5-68cd-4d1d-a0de-f5f566f76d91.csv")
+# Define test_values_url
+test_values_url <- "http://s3.amazonaws.com/drivendata/data/7/public/702ddfc5-68cd-4d1d-a0de-f5f566f76d91.csv"
 
-# Import test_set_values
-test_set_values <- 
+# Import test_values
+test_values <- 
 
 ```
 
 *** =solution
 ```{r,eval=FALSE}
-# Define train_set_values_url
-train_set_values_url <- url("http://s3.amazonaws.com/drivendata/data/7/public/4910797b-ee55-40a7-8668-10efd5c1b960.csv")
+# Define train_values_url
+train_values_url <- "http://s3.amazonaws.com/drivendata/data/7/public/4910797b-ee55-40a7-8668-10efd5c1b960.csv"
 
-# Import train_set_values
-train_set_values <- read.csv(train_set_values_url)
+# Import train_values
+train_values <- read.csv(url(train_values_url))
 
-# Define train_set_labels_url
-train_set_labels_url <- url("http://s3.amazonaws.com/drivendata/data/7/public/0bf8bc6e-30d0-4c50-956a-603fc693d966.csv")
+# Define train_labels_url
+train_labels_url <- "http://s3.amazonaws.com/drivendata/data/7/public/0bf8bc6e-30d0-4c50-956a-603fc693d966.csv"
 
-# Import train_set_labels
-train_set_labels <- read.csv(train_set_values_url)
+# Import train_labels
+train_labels <- read.csv(url(train_values_url))
 
-# Define test_set_values_url
-test_set_values_url <- url("http://s3.amazonaws.com/drivendata/data/7/public/702ddfc5-68cd-4d1d-a0de-f5f566f76d91.csv")
+# Define test_values_url
+test_values_url <- "http://s3.amazonaws.com/drivendata/data/7/public/702ddfc5-68cd-4d1d-a0de-f5f566f76d91.csv"
 
-# Import test_set_values
-test_set_values <- read.csv(test_set_values_url)
+# Import test_values
+test_values <- read.csv(url(test_values_url))
 
 ```
 
 *** =sct
 ```{r,eval=FALSE}
 
-
-
 msg <- "Do not change the code that specifies the URLs of the 3 csvs. You can reset the sample code to its original state by pressing the reset button next to 'Submit Answer'."
-lapply(c("train_set_values_url", "train_set_labels_url", "test_set_values_url"), test_object, undefined_msg = msg, incorrect_msg = msg)
+lapply(c("train_values_url", "train_labels_url", "test_values_url"), test_object, undefined_msg = msg, incorrect_msg = msg)
 
 test_correct({
   test_object("train")
