@@ -107,7 +107,7 @@ train_values <- read.csv(url(train_values_url))
 train_labels_url <- "http://s3.amazonaws.com/drivendata/data/7/public/0bf8bc6e-30d0-4c50-956a-603fc693d966.csv"
 
 # Import train_labels
-train_labels <- read.csv(url(train_values_url))
+train_labels <- read.csv(url(train_labels_url))
 
 # Define test_values_url
 test_values_url <- "http://s3.amazonaws.com/drivendata/data/7/public/702ddfc5-68cd-4d1d-a0de-f5f566f76d91.csv"
@@ -143,10 +143,10 @@ Before starting with the actual analysis, it's important to understand the struc
 The training and test set are already available in the workspace, as `train` and `test`. Apply `str()` to the training set. Which of the following statements is correct?
 
 *** =instructions
-- The training set has 891 observations and 12 variables.
-- The training set has 418 observations and 11 variables.
-- The testing set has 891 observations and 11 variables.
-- The testing set has 418 observations and 12 variables.
+- `train_values` has 59400 observations and 40 variables.
+- `train_values` has 59400 observations and 40 variables.
+- `train_values` has 59400 observations and 40 variables.
+- `train_values` has 59400 observations and 40 variables.
   
 *** =hint
 To see the structure of the `test` variable you can make use of `str(test)`.
