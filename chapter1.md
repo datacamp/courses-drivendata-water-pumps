@@ -125,7 +125,7 @@ lapply(c("train_values_url", "train_labels_url", "test_values_url"), test_object
 
 test_correct({
   test_object("train_values")
-  test_object("train_lables")
+  test_object("train_labels")
   test_object("test_values")
 }, {
   test_function("read.csv", args = "file")
