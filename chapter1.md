@@ -54,11 +54,9 @@ success_msg("Awesome! See how the console shows the result of the R code you sub
 --- type:NormalExercise xp:100 skills:1,3 key:5ac7cf5cee32ae6b323cfb298ebfae05fc4e7bf4
 ## Data Mining the Water Table
 
-Can you predict which water pumps are faulty?
-
 Using data from Taarifa and the Tanzanian Ministry of Water, can you predict which pumps are functional, which need some repairs, and which don't work at all? This is an intermediate-level practice competition. Predict one of these three classes based on a number of variables about what kind of pump is operating, when it was installed, and how it is managed. A smart understanding of which waterpoints will fail can improve maintenance operations and ensure that clean, potable water is available to communities across Tanzania.
 
-Let's start with loading in the training and testing set into your R environment. You will use the training set to build your model, and the test set to validate it. The URLs for the 3 `csv` files are already available as variables in the sample code. You can load this data with the `read.csv()` function: simply pass the defined URL variables. We will inspect these new variables in the following exercises.
+Let's start with loading in the training and testing set into your R environment. You will use the training set to build your model, and the test set to validate it. The URLs for the 3 `csv` files are already available as variables in the sample code. You can load this data with the `read.csv()` function: simply pass the defined URL variables. We will inspect these new variables in the following exercises. 
 
 *** =instructions
 - Load the [training set values](http://s3.amazonaws.com/drivendata/data/7/public/4910797b-ee55-40a7-8668-10efd5c1b960.csv), [training set labels](http://s3.amazonaws.com/drivendata/data/7/public/0bf8bc6e-30d0-4c50-956a-603fc693d966.csv), and [test set values](http://s3.amazonaws.com/drivendata/data/7/public/702ddfc5-68cd-4d1d-a0de-f5f566f76d91.csv) and assign these to three variables: `train_values`, `train_labels` and `test_values`.
@@ -138,18 +136,18 @@ success_msg("Well done! Now that your data is loaded in, let's see if you can un
 --- type:MultipleChoiceExercise xp:50 skills:1,3 key:5ba0cacb49934cf4d62a10a7fb9287f6fef57a1e
 ## Understanding your data
 
-Before starting with the actual analysis, it's important to understand the structure of your data. Both `test` and `train` are data frames, R's way of representing a dataset. You can easily explore a data frame using the function `str()`. `str()` gives you information such as the data types in the data frame (e.g. `int` for integer), the number of observations, and the number of variables.
+Before starting with the actual analysis, it's important to understand the structure of your data. The variables loaded in the previous exercise, `train_labels`, `train_values`, and `test_values`, are data frames, R's way of representing a dataset. You can easily explore a data frame using the function `str()`. `str()` gives you information such as the data types in the data frame (e.g. `int` for integer), the number of observations, and the number of variables. It is a great way to get a feel for the contents of the data frame.
 
-The training and test set are already available in the workspace, as `train` and `test`. Apply `str()` to the training set. Which of the following statements is correct?
+The 3 data frames are already loaded into your workspace. Apply `str()` to each variable to see its dimensions and basic composition. Which of the following statements is correct?
 
 *** =instructions
-- `train_values` has 59400 observations and 40 variables.
-- `train_values` has 59400 observations and 40 variables.
-- `train_values` has 59400 observations and 40 variables.
+- `train_labels` has 14850 observations and 40 variables.
+- `train_labels` has 59400 observations and 2 variables.
+- `train_values` has 14850 observations and 2 variables.
 - `train_values` has 59400 observations and 40 variables.
   
 *** =hint
-To see the structure of the `test` variable you can make use of `str(test)`.
+To see the structure of the `test_values` variable you can make use of `str(test_values)`.
 
 *** =pre_exercise_code
 ```{r,eval=FALSE}
@@ -158,15 +156,25 @@ load(url("http://s3.amazonaws.com/assets.datacamp.com/production/course_1032/dat
 
 *** =sct
 ```{r,eval=FALSE}
-msg1 <- "Great job! In case you want to learn more on data frames, <a href='https://www.datacamp.com/courses/free-introduction-to-r'>check out the data frames chapter in DataCamp's introduction to R course.</a>"
-msg2 <- "Wrong, try again. Maybe have a look at the hint."
-msg3 <- "Not so good... Maybe have a look at the hint."
-msg4 <- "Incorrect. Maybe have a look at the hint."
-test_mc(correct = 1, feedback_msgs = c(msg1, msg2, msg3, msg4))
+msg1 <- "Wrong, try again. Maybe have a look at the hint."
+msg2 <- "Not so good... Maybe have a look at the hint."
+msg3 <- "Incorrect. Maybe have a look at the hint."
+msg4 <- "Great job! In case you want to learn more on data frames, <a href='https://www.datacamp.com/courses/free-introduction-to-r'>check out the data frames chapter in DataCamp's introduction to R course.</a>"
+test_mc(correct =4, feedback_msgs = c(msg1, msg2, msg3, msg4))
 ```
 
 --- type:NormalExercise xp:100 skills:1 key:aa1b373e5055f70cb212be1eb593927ff1d48cfa
-## Rose vs Jack, or Female vs Male
+## Big Water Table
+
+As you can see from the last exercise, these are large datasets with a ton of variables. Here is a quick explination of the variables that you imported before:
+
+- `train_values` corresponds to the independent variables for the training set.
+- `train_labels` contains	the dependent variable (status_group) for each of the rows in `train_values
+- `test_values` is the independent variables that need predictions
+
+To simplify things, it is typical to merge the independent values and the dependent labels into one data frame. This can be acheived using the `merge()` command. Going forward, this will make it easier when modeling and manipulating the dataframe. The next steps will be to begin to examine the features of the data set and 
+
+
 
 How many people in your training set survived the disaster with the Titanic? To see this, you can use the `table()` command in combination with the `$`-operator to select a single column of a data frame:
 
