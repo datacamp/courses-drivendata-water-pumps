@@ -166,40 +166,44 @@ test_mc(correct =4, feedback_msgs = c(msg1, msg2, msg3, msg4))
 --- type:NormalExercise xp:100 skills:1 key:aa1b373e5055f70cb212be1eb593927ff1d48cfa
 ## Big Water Table
 
-As you can see from the last exercise, these are large datasets with a ton of variables. Here is a quick explination of the variables that you imported before:
+As you can see from the last exercise, these are large datasets with a bunch of variables. Here is a quick explination of the variables that you imported before:
 
 - `train_values` corresponds to the independent variables for the training set.
-- `train_labels` contains	the dependent variable (status_group) for each of the rows in `train_values
+- `train_labels` contains	the dependent variable (`status_group`) for each of the rows in `train_values`
 - `test_values` is the independent variables that need predictions
 
-To simplify things, it is typical to merge the independent values and the dependent labels into one data frame. This can be acheived using the `merge()` command. Going forward, this will make it easier when modeling and manipulating the dataframe. The next steps will be to begin to examine the features of the data set and 
+To simplify things, it is common to merge the independent values and the dependent labels into one data frame. This can be acheived using the `merge()` command on `train_values` and `train_labels`. Going forward, this will make it easier when modeling and manipulating the data frame. 
 
+The next steps will be to begin to examine the features of the data set. The objective of this challenge is to predict whether or not a water pump is functional for the test set. We are given the status of the pumps for the `train` data frame as the column `status_group`. 
 
-
-How many people in your training set survived the disaster with the Titanic? To see this, you can use the `table()` command in combination with the `$`-operator to select a single column of a data frame:
+So, how many water pumps in the `train` data frame are functional? One way to see this is to use the `table()` command. It can also be used with the `$`-operator to select a single column of data:
 
 ```
 # absolute numbers
-table(train$Survived) 
+table(train$status_group) 
 
-# percentages
-prop.table(table(train$Survived))
+# proportions
+prop.table(table(train$status_group))
 ``` 
 
-If you run these commands in the console, you'll see that 549 individuals died (62%) and 342 survived (38%). A simple way prediction heuristic could be: "majority wins". This would mean that you will predict every unseen observation to not survive.
-
-In general, the `table()` command can help you to explore what variables have predictive value. For example, maybe gender could play a role as well? You can explore this using the `table()` function for a two-way comparison on the number of males and females that survived, with this syntax:
+If you run those commands in the console, you will see that 38.4% of water pumps in the `train` data frame are non-functional. It would also be helpful to see a two way table comparing a variable with `status_group` to see if it may have predictive value. For example:
 
 ```
-table(train$Sex, train$Survived)
+# absolute numbers
+table(train$payment, train$status_group)
+
+# proportions
+prop.table(table(train$payment, train$status_group), margin = 1)
+
 ```
 
-To get proportions, you can again wrap `prop.table()` around `table()`, but you'll have to specify whether you want row-wise or column-wise proportions. This is done by setting the second argument of `prop.table()`, called `margin`, to 1 or 2, respectively.
+The second argument in `prop.table()` is called `margin` and can be set to either 1 or 2, determining whether the proportions are calculated row-wise or column-wise.
+
 
 *** =instructions
-- Calculate the survival rates in absolute numbers using `table()` on `train`.
-- Calculate the survival rates as proportions by wrapping `prop.table()` around the previous `table()` call.
-- Do a two-way comparison on the number of males and females that survived, in absolute numbers. Again, use the `train` data frame.
+- Calculate the pump status in absolute numbers using `table()` on `train`.
+- Calculate the pump status as proportions by wrapping `prop.table()` around the previous `table()` call.
+- Do a two-way comparison on the number of functioning water pumps with the `quantity` variable, in absolute numbers. Again, use the `train` data frame.
 - Convert the numbers to row-wise proportions.
 
 *** =hint
@@ -208,61 +212,60 @@ To get proportions, you can again wrap `prop.table()` around `table()`, but you'
 
 *** =pre_exercise_code
 ```{r,eval=FALSE}
-train <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/course/Kaggle/train.csv")
-test <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/course/Kaggle/test.csv")
+load(url("http://s3.amazonaws.com/assets.datacamp.com/production/course_1032/datasets/driven_data_ex3.Rdata"))
 ```
 
 *** =sample_code
 ```{r,eval=FALSE}
-# Your train and test set are still loaded
-str(train)
-str(test)
+# Merge data frames to create the data frame train
+train <- merge(train_labels, train_values)
 
-# Passengers that survived vs passengers that passed away
-
+# Look at the number of pumps in each functional status group
+table(___)
 
 # As proportions
 
   
-# Males & females that survived vs males & females that passed away
+# Table of the quantity variable vs the status of the pumps
 
 
-# As row-wise proportions
-
+# As row-wise proportions, quantity vs status_group
+prop.table(table(___, ___), margin = 1)
 ```
 
 *** =solution
 ```{r,eval=FALSE}
-# Your train and test set are still loaded
-str(train)
-str(test)
+# Merge data frames to create the data frame train
+train <- merge(train_labels, train_values)
 
-# Passengers that survived vs passengers that passed away
-table(train$Survived)
+# Look at the number of pumps in each functional category
+table(train$status_group)
 
 # As proportions
-prop.table(table(train$Survived))
+prop.table(table(train$status_group))
   
-# Males & females that survived vs males & females that passed away
-table(train$Sex, train$Survived)
+# Table of the quantity variable vs the status of the pumps
+table(train$quantity, train$status_group)
 
 # As row-wise proportions
-prop.table(table(train$Sex, train$Survived), 1)
+prop.table(table(train$quantity, train$status_group), margin = 1)
+
+
 ```
 
 *** =sct
 ```{r,eval=FALSE}
 test_error()
-msg <- "Have you correctly coded the table? Do not forget to provide the table that shows the number of survivors vs passed away in percentages."
-test_output_contains("table(train$Survived)", 
-                     incorrect_msg = paste(msg, "shows the number of survivors vs passed away?"))
-test_output_contains("prop.table(table(train$Survived))", 
-                     incorrect_msg = paste(msg, "shows the number of survivors vs passed away as proportions?"))
-test_output_contains("table(train$Sex, train$Survived)", 
-                     incorrect_msg =  paste(msg, "shows the number of survivors vs passed away, taking into account gender."))
-test_output_contains("prop.table(table(train$Sex, train$Survived),1)", 
-                     incorrect_msg = paste(msg, "shows the number of survivors vs passed away in proportions, taking into account gender."))
-success_msg("Well done! It looks like it makes sense to predict that all females will survive, and all men will die.")
+msg <- "Have you correctly coded the table? Do not forget to provide the table that shows the number of water pumps in each functional status."
+test_output_contains("table(train$status_group)", 
+                     incorrect_msg = paste(msg, "shows the number of water pumps at each functional status?"))
+test_output_contains("prop.table(table(train$status_group))", 
+                     incorrect_msg = paste(msg, "shows the proportion of water pumps at each functional status?"))
+test_output_contains("table(train$quantity, train$status_group)", 
+                     incorrect_msg =  paste(msg, "shows the number of water pumps at each functional status vs the quantity variable?"))
+test_output_contains("prop.table(table(train$quantity, train$status_group), margin = 1)", 
+                     incorrect_msg = paste(msg, "shows the proportion of water pumps at each functional status by the quantity variable?"))
+success_msg("Well done! It looks like if the quantity variable is 'dry', it is likely that the pump is not functional. We will continue to explore some more variables next.")
 ```
 
 --- type:NormalExercise xp:100 skills:1 key:aff8037b847c2c5c2e7f1db185813bf6c0769d3a
