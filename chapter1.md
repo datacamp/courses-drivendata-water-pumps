@@ -178,15 +178,9 @@ test_mc(correct =4, feedback_msgs = c(msg1, msg2, msg3, msg4))
 ```
 
 --- type:NormalExercise xp:100 skills:1 key:aa1b373e5055f70cb212be1eb593927ff1d48cfa
-## Big Water Table
+## Water table()
 
-As you can see from the last exercise, these are large datasets with a bunch of variables. Here is a quick explination of the variables that you imported before:
-
-- `train_values` corresponds to the independent variables for the training set.
-- `train_labels` contains	the dependent variable (`status_group`) for each of the rows in `train_values`
-- `test_values` is the independent variables that need predictions
-
-To simplify things, it is common to merge the independent values and the dependent labels into one data frame. This can be acheived using the `merge()` command on `train_values` and `train_labels`. Going forward, this will make it easier when modeling and manipulating the data frame. 
+As you can see from the last exercise, these are large datasets with a bunch of variables. To simplify things, it is common to merge the independent values and the dependent labels into one data frame. This can be acheived using the `merge()` command on `train_values` and `train_labels`. Going forward, this will make it easier when modeling and manipulating the data frame. 
 
 The next steps will be to begin to examine the features of the data set. The objective of this challenge is to predict whether or not a water pump is functional for the test set. We are given the status of the pumps for the `train` data frame as the column `status_group`. 
 
@@ -269,102 +263,101 @@ prop.table(table(train$quantity, train$status_group), margin = 1)
 
 *** =sct
 ```{r,eval=FALSE}
-test_error()
-msg <- "Have you correctly coded the table? Do not forget to provide the table that shows the number of water pumps in each functional status."
+msg <- "Have you correctly coded the table? Do not forget to provide the table that "
 test_output_contains("table(train$status_group)", 
-                     incorrect_msg = paste(msg, "shows the number of water pumps at each functional status?"))
+                     incorrect_msg = paste(msg, "shows the number of water pumps at each functional status."))
 test_output_contains("prop.table(table(train$status_group))", 
-                     incorrect_msg = paste(msg, "shows the proportion of water pumps at each functional status?"))
+                     incorrect_msg = paste(msg, "shows the proportion of water pumps at each functional status."))
 test_output_contains("table(train$quantity, train$status_group)", 
-                     incorrect_msg =  paste(msg, "shows the number of water pumps at each functional status vs the quantity variable?"))
+                     incorrect_msg =  paste(msg, "shows the number of water pumps at each functional status vs the quantity variable."))
 test_output_contains("prop.table(table(train$quantity, train$status_group), margin = 1)", 
                      incorrect_msg = paste(msg, "shows the proportion of water pumps at each functional status by the quantity variable?"))
+test_error()
 success_msg("Well done! It looks like if the quantity variable is 'dry', it is likely that the pump is not functional. We will continue to explore some more variables next.")
 ```
 
 --- type:NormalExercise xp:100 skills:1 key:aff8037b847c2c5c2e7f1db185813bf6c0769d3a
-## Does age play a role?
+## Explore and Visualize
 
-Another variable that could influence survival is age; it's probable children were saved first. You can test this by creating a new column with a categorical variable `child`. `child` will take the value 1 in case age is <18, and a value of 0 in case age is >=18. 
+Another great way to explore your data is to create a few visualizations. This can help you better understand the structure and potential limitations of particular variables. 
 
-To add this new variable you need to do two things (i) create a new column, and (ii) provide the values for each observation (i.e., row) based on the age of the passenger.
+When you check out the structure of the variables in `train` with `str()`; you see the majority are categorical factor variables. If there aren't too many categories, a bar chart can be a great way to visualize and digest your data. 
 
-Adding a new column with R is easy and can be done via the `$`-operator. For example, 
+In the sample code to the right, you have been provided with a command that will produce a plot that shows a breakdown of the `quantity` variable broken up by `status_group`. Here are a few variables that you can view with a similar command:
 
-```
-train$new <- 10
-``` 
+- `quality_group` - The quality of the water
+- `extraction_type_class` - The kind of extraction the waterpoint uses
+- `payment` - What the water costs
+- `source_type` - The source of the water
+- `waterpoint_type` - The kind of waterpoint
 
-would create a `new` column in the `train` data frame with the value 10 for each observation. 
+You can see descriptions of all of the variables on the competition page [here](https://www.drivendata.org/competitions/7/page/25/). 
 
-To set the values based on the age of the passenger, you make use of a boolean test inside the square bracket operator. With the `[]`-operator you create a subset of rows and assign a value to a certain variable of that subset of observations. For example,
-
-```
-train$new[train$Survived == 1] <- 0
-```
-
-would give a value of 0 to the variable `new` for the subset of passengers that survived the disaster.   
 
 *** =instructions
-- Create a new column `Child` in the `train` data frame that takes the value `NA`, if the passenger's age is `NA`, `1` when the passenger is < 18 years and the value `0` when the passenger is >= 18 years.
-- Do a two-way comparison on the number of children vs adults that survived, in row-wise proportions.
+- Use the package `ggplot2` to create a bar chart for the variable `quantity` using the aesthetic fill to partition by `status_group`
+- Then make a similar plot for `extraction_type_class` 
+- And again for `waterpoint_type`
 
 *** =hint
-Suppose you wanted to add a new column `clothes` to the `test` set and give all males the value `"pants"` and the others `"skirt"`:
-```
-test$clothes <- "skirt"
-test$clothes[test$Sex == 'male'] <- "pants"
-```
+Use the same code that is provided for the `quantity` plot. Simply change the first argument in the command.
 
 *** =pre_exercise_code
 ```{r,eval=FALSE}
-train <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/course/Kaggle/train.csv")
-test <- read.csv(url("http://s3.amazonaws.com/assets.datacamp.com/course/Kaggle/test.csv"))
+load(url("http://s3.amazonaws.com/assets.datacamp.com/production/course_1032/datasets/driven_data_ex3.Rdata"))
+train <- merge(train_labels, train_values)
 ```
 
 *** =sample_code
 ```{r,eval=FALSE}
-# Your train and test set are still loaded in
+# Load the ggplot package and examine train
+library(ggplot2)
 str(train)
-str(test)
 
-# Create the column child, and indicate whether child or no child
+# Create bar plot for quantity
+qplot(quantity, data=train, geom="bar", fill=status_group) + 
+  theme(legend.position = "top")
 
+# Create bar plot for extraction_type_class
+qplot(___, data=train, geom="bar", fill=status_group) + 
+  theme(legend.position = "top")
 
-# Two-way comparison
-
-
+# Create bar plot for waterpoint_type
+qplot(___, data=train, geom="bar", fill=status_group) + 
+  theme(legend.position = "top")
 ```
 
 *** =solution
 ```{r,eval=FALSE}
-# Your train and test set are still loaded in
+# Load the ggplot package and examine train
+library(ggplot2)
 str(train)
-str(test)
 
-# Create the column child, and indicate whether child or no child
-train$Child <- NA
-train$Child[train$Age < 18] <- 1
-train$Child[train$Age >= 18] <- 0
+# Create bar plot for quantity
+qplot(quantity, data=train, geom="bar", fill=status_group) + 
+  theme(legend.position = "top")
 
-# Two-way comparison
-prop.table(table(train$Child, train$Survived), 1)
+# Create bar plot for extraction_type_class
+qplot(extraction_type_class, data=train, geom="bar", fill=status_group) + 
+  theme(legend.position = "top")
+
+# Create bar plot for waterpoint_type
+qplot(waterpoint_type, data=train, geom="bar", fill=status_group) + 
+  theme(legend.position = "top")
+
 ```
 
 *** =sct
 ```{r,eval=FALSE}
-test_data_frame("train", columns = "Child",
-                undefined_msg = "Do not remove the variable `train`, it has already been created for you.",
-                undefined_cols_msg = "Make sure to specify the column `Child` inside `train`.",
-                incorrect_msg = paste("It looks like you didn't correctly set all values of the `Child` column.",
-                                      "You'll have to do the explained subsetting operation twice!"))
-
-test_object("train", incorrect_msg = paste("You have correctly specified the `Child` column inside `train`,",
-                                           "but there is still something wrong. Make sure not to add or edit any other columns!"))
-
-test_output_contains("prop.table(table(train$Child, train$Survived),1)", incorrect_msg = "Do not forget to provide the table that shows the number of survivors vs passed away in row-wise proportions, taking into account age. Inside `table()`, `train$Child` comes first!. Don't forget to wrap `prop.table()` around it.")
-
-success_msg("While less obviously than gender, age also seems to have an impact on survival.")
+msg <- "There is no need to change the commands in the sample code."
+test_function_v2("qplot", eval = FALSE, index = 1, 
+                 incorrect_msg = msg)
+test_function_v2("qplot", eval = FALSE, index = 2, 
+                 incorrect_msg = paste(msg, " Simply change the `x` value in `qplot()` to `extraction_point_class`"))
+test_function_v2("qplot", eval = FALSE, index = 3, 
+                 incorrect_msg = paste(msg, " Simply change the `x` value in `qplot()` to `waterpoint_type`"))
+test_error()
+success_msg("Awesome! Now let's look at a few more visualizations.")
 ```
 
 --- type:NormalExercise xp:100 skills: 1,6 key:5da127ed17a54aa18d130798b9662f7e21b14cd1
@@ -420,11 +413,41 @@ test_one$Survived <- 0
 
 # Set Survived to 1 if Sex equals "female"
 test_one$Survived[test$Sex == "female"] <- 1
+
+####
+m <- ggplot(subset(train, construction_year > 0), aes(x = construction_year))
+m <- m + geom_histogram(bins = 20)
+m + facet_grid( ~ status_group)
+
+
+s <- ggplot(subset(train, latitude < 0 & longitude > 0), aes(x=latitude, y=longitude, color=status_group))
+s + geom_point(shape=1)
+
+library(googleVis)
+train$latlong <- paste(round(train$latitude,2), round(train$longitude,2), sep=":")
+
+names(tanz_markers)[1] <- "quantity"
+tanz_markers <- tanz_markers[1:1000,]
+tanz_markers$Size <- 1
+
+library(googleVis)
+train$latlong <- paste(round(train$latitude,2), round(train$longitude, 2), sep=":")
+wells_map <- gvisGeoChart(train[1:1000], locationvar = "latlong", colorvar = "quantity", sizevar = "Size", options = list(region = "TZ"))
+plot(wells_map)
+
+train$Size <- 1
+library(googleVis)
+train$latlong <- paste(round(train$latitude,2), round(train$longitude, 2), sep=":")
+wells_map <- gvisGeoChart(train[1:1000,], locationvar = "latlong", colorvar = "status_group", sizevar = "Size", options = list(region = "TZ", colorAxis="{values:[1,2,3],
+colors:[\'green', \'grey\', \'black']}", backgroundColor="lightblue"))
+plot(wells_map)
+
+#Nora Nord
 ```
 
 *** =sct
 ```{r,eval=FALSE}
-msg <- "&#20013;&#22269;&#35805;&#19981;&#29992;&#24385;&#23383;&#12290;."
+msg <- "Do not remove or change the contents of `test`! You should work with a copy of `test`, namely `test_one`."
 test_object("test", undefined_msg = msg, incorrect_msg = msg)
 
 test_data_frame("test_one", "Survived",
