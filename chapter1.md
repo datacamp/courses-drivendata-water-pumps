@@ -56,7 +56,11 @@ success_msg("Awesome! See how the console shows the result of the R code you sub
 
 Using data from Taarifa and the Tanzanian Ministry of Water, can you predict which pumps are functional, which need some repairs, and which don't work at all? This is an intermediate-level practice competition. Predict one of these three classes based on a number of variables about what kind of pump is operating, when it was installed, and how it is managed. A smart understanding of which waterpoints will fail can improve maintenance operations and ensure that clean, potable water is available to communities across Tanzania.
 
-Let's start with loading in the training and testing set into your R environment. You will use the training set to build your model, and the test set to validate it. The URLs for the 3 `csv` files are already available as variables in the sample code. You can load this data with the `read.csv()` function: simply pass the defined URL variables. We will inspect these new variables in the following exercises. 
+Let's start with loading in the training and testing set into your R environment. You will use the training set to build your model, and the test set to validate it. The URLs for the 3 `csv` files are already available as variables in the sample code. You can load this data with the `read.csv()` function: simply pass the defined URL variables. We will inspect these new variables in the following exercises. Here is a quick explination of the variables that you are importing:
+
+- `train_values` corresponds to the independent variables for the training set.
+- `train_labels` contains	the dependent variable (`status_group`) for each of the rows in `train_values`
+- `test_values` is the independent variables that need predictions
 
 *** =instructions
 - Load the [training set values](http://s3.amazonaws.com/drivendata/data/7/public/4910797b-ee55-40a7-8668-10efd5c1b960.csv), [training set labels](http://s3.amazonaws.com/drivendata/data/7/public/0bf8bc6e-30d0-4c50-956a-603fc693d966.csv), and [test set values](http://s3.amazonaws.com/drivendata/data/7/public/702ddfc5-68cd-4d1d-a0de-f5f566f76d91.csv) and assign these to three variables: `train_values`, `train_labels` and `test_values`.
@@ -126,11 +130,13 @@ test_correct({
   test_object("train_labels")
   test_object("test_values")
 }, {
-  test_function("read.csv", args = "file")
+  test_function("read.csv", args = "file", index = 1)
+  test_function("read.csv", args = "file", index = 2)
+  test_function("read.csv", args = "file", index = 3)
 })
 
 test_error()
-success_msg("Well done! Now that your data is loaded in, let's see if you can understand it.")
+success_msg("Well done! Now that your data is loaded in, you can start exploring it!.")
 ```
 
 --- type:MultipleChoiceExercise xp:50 skills:1,3 key:5ba0cacb49934cf4d62a10a7fb9287f6fef57a1e
