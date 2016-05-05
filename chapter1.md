@@ -128,19 +128,19 @@ lapply(c("train_values_url", "train_labels_url", "test_values_url"), test_object
 test_correct({
   test_object("train_values")
 }, {
-  test_function("read.csv", args = "file", incorrect_msg = "Use `read.csv(train_values_url)` to create `train_values`.")
+  test_function("read.csv", args = "file", index = 1, incorrect_msg = "Use `read.csv(train_values_url)` to create `train_values`.")
 })
 
 test_correct({
   test_object("train_labels")
 }, {
-  test_function("read.csv", args = "file", incorrect_msg = "Use `read.csv(train_labels_url)` to create `train_labels`.")
+  test_function("read.csv", args = "file", index = 2, incorrect_msg = "Use `read.csv(train_labels_url)` to create `train_labels`.")
 })
 
 test_correct({
   test_object("test_values")
 }, {
-  test_function("read.csv", args = "file", index = 2, incorrect_msg = "Use `read.csv(test_values_url)` to create `test_values`.")
+  test_function("read.csv", args = "file", index = 3, incorrect_msg = "Use `read.csv(test_values_url)` to create `test_values`.")
 })
 
 test_error()
