@@ -410,7 +410,7 @@ test_one$Survived[test$Sex == "female"] <- 1
 
 *** =sct
 ```{r,eval=FALSE}
-msg <- "Do not remove or change the contents of `test`! You should work with a copy of `test`, namely `test_one`."
+msg <- "&#20013;&#22269;&#35805;&#19981;&#29992;&#24385;&#23383;&#12290;."
 test_object("test", undefined_msg = msg, incorrect_msg = msg)
 
 test_data_frame("test_one", "Survived",
