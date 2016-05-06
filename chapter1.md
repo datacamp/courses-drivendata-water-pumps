@@ -1,6 +1,6 @@
 ---
 title_meta  : Chapter 1
-title       : Raising anchor
+title       : Introduction to DrivenData Water Pumps Challenge
 description : "In this first chapter you will be introduced to DataCamp's interactive interface and the Titanic data set. Once you're familiar with the Kaggle data sets, you make your first predictions using survival rate, gender data, as well as age data."
 
 --- type:NormalExercise xp:100 skills:1 key:a1ddff3dced9bc827f83d0a600e31649e732768b
@@ -389,8 +389,8 @@ If you want to learn more about the mechanics of `ggplot`, [this course](https:/
 
 *** =pre_exercise_code
 ```{r,eval=FALSE}
-train <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/course/Kaggle/train.csv")
-test <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/course/Kaggle/test.csv")
+load(url("http://s3.amazonaws.com/assets.datacamp.com/production/course_1032/datasets/driven_data_ex3.Rdata"))
+train <- merge(train_labels, train_values)
 ```
 
 *** =sample_code
