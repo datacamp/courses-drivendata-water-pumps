@@ -395,7 +395,7 @@ test <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/course/Kaggle/test
 
 *** =sample_code
 ```{r,eval=FALSE}
-library(ggpot2)
+library(ggplot2)
 
 # Create a histogram for `construction_year` grouped by `status_group`
 ggplot(train, aes(x = ___)) + 
@@ -411,7 +411,7 @@ ggplot(subset(train, construction_year > 0), aes(x = ___)) +
 
 *** =solution
 ```{r,eval=FALSE}
-library(ggpot2)
+library(ggplot2)
 
 # Create a histogram for `construction_year` grouped by `status_group`
 ggplot(train, aes(x = construction_year)) + 
