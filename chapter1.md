@@ -296,7 +296,7 @@ You can see descriptions of all of the variables on the competition page [here](
 
 *** =instructions
 - Use the package `ggplot2` to create a bar chart for the variable `quantity` using the aesthetic fill to partition by `status_group`
-- Then make a similar plot for `extraction_type_class` 
+- Then make a similar plot for `quality_group` 
 - And again for `waterpoint_type`
 
 *** =hint
@@ -318,13 +318,15 @@ str(train)
 qplot(quantity, data=train, geom="bar", fill=status_group) + 
   theme(legend.position = "top")
 
-# Create bar plot for extraction_type_class
+# Create bar plot for quality_group
 qplot(___, data=train, geom="bar", fill=status_group) + 
   theme(legend.position = "top")
 
 # Create bar plot for waterpoint_type
 qplot(___, data=train, geom="bar", fill=status_group) + 
-  theme(legend.position = "top")
+  theme(legend.position = "top") + 
+  theme(axis.text.x=element_text(angle = -20, hjust = 0))
+
 ```
 
 *** =solution
@@ -337,25 +339,96 @@ str(train)
 qplot(quantity, data=train, geom="bar", fill=status_group) + 
   theme(legend.position = "top")
 
-# Create bar plot for extraction_type_class
-qplot(extraction_type_class, data=train, geom="bar", fill=status_group) + 
+# Create bar plot for quality_group
+qplot(quality_group, data=train, geom="bar", fill=status_group) + 
   theme(legend.position = "top")
 
 # Create bar plot for waterpoint_type
 qplot(waterpoint_type, data=train, geom="bar", fill=status_group) + 
-  theme(legend.position = "top")
+  theme(legend.position = "top") +
+  theme(axis.text.x=element_text(angle = -20, hjust = 0))
 
 ```
 
 *** =sct
 ```{r,eval=FALSE}
 msg <- "There is no need to change the commands in the sample code."
-test_function_v2("qplot", eval = FALSE, index = 1, 
+test_function_v2("qplot", "x", eval = FALSE, index = 1, 
                  incorrect_msg = msg)
-test_function_v2("qplot", eval = FALSE, index = 2, 
-                 incorrect_msg = paste(msg, " Simply change the `x` value in `qplot()` to `extraction_point_class`"))
-test_function_v2("qplot", eval = FALSE, index = 3, 
+test_function_v2("qplot", "x", eval = FALSE, index = 2, 
+                 incorrect_msg = paste(msg, " Simply change the `x` value in `qplot()` to `quality_group`"))
+test_function_v2("qplot", "x", eval = FALSE, index = 3, 
                  incorrect_msg = paste(msg, " Simply change the `x` value in `qplot()` to `waterpoint_type`"))
 test_error()
 success_msg("Awesome! Now let's look at a few more visualizations.")
+```
+
+--- type:NormalExercise xp:100 skills: 1,6 key:5da127ed17a54aa18d130798b9662f7e21b14cd1
+## Continuous Variable Viz
+
+You just made some great plots that compared some categorical variables based on the well status. Now you can look a some ordinal or continuous variables using `ggplot2` and `geom_histogram`. 
+
+It could be useful to observe the distribution of a few of these variables. Here is a list of a few variables in `train` that you could view in this way:
+
+- `amount_tsh` - Total static head (amount water available to waterpoint)
+- `gps_height` - Altitude of the well
+- `population` - Population around the well
+- `construction_year` - Year the waterpoint was constructed
+
+Feel free to use the script in the sample code to create histograms for any of the above variables to observe their distributions.
+
+If you want to learn more about the mechanics of `ggplot`, [this course](https://www.datacamp.com/courses/data-visualization-with-ggplot2-1) is a great place to start.
+
+*** =instructions 
+- Create a set of histogram of `construction_year` for wells that are 'functional', 'functional needs repair', and 'non functional'. 
+- Then create the same plots but only for wells that have a construction year that is not missing (which in this case is coded as `0`s). Simply fill in the two missing variables.
+
+*** =hint
+- Fill in the `x` variable in the aesthetic to complete the first plot
+- Fill in the `facet_grid` theme with the same variable as the first plot
+
+*** =pre_exercise_code
+```{r,eval=FALSE}
+train <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/course/Kaggle/train.csv")
+test <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/course/Kaggle/test.csv")
+```
+
+*** =sample_code
+```{r,eval=FALSE}
+library(ggpot2)
+
+# Create a histogram for `construction_year` grouped by `status_group`
+ggplot(train, aes(x = ___)) + 
+  geom_histogram(bins = 20) + 
+  facet_grid( ~ status_group)
+
+# Now subsetting when construction_year is larger than 0
+ggplot(subset(train, construction_year > 0), aes(x = ___)) +
+  geom_histogram(bins = 20) + 
+  facet_grid( ~ ___)
+
+```
+
+*** =solution
+```{r,eval=FALSE}
+library(ggpot2)
+
+# Create a histogram for `construction_year` grouped by `status_group`
+ggplot(train, aes(x = construction_year)) + 
+  geom_histogram(bins = 20) + 
+  facet_grid( ~ status_group)
+
+# Now subsetting when construction_year is larger than 0
+ggplot(subset(train, construction_year > 0), aes(x = construction_year)) +
+  geom_histogram(bins = 20) + 
+  facet_grid( ~ status_group)
+
+```
+
+*** =sct
+```{r,eval=FALSE}
+test_ggplot(1)
+test_ggplot(2)
+test_error()
+success_msg("Great work! As you can see, the plot showed us that there were a lot of missing values coded as 0's. After removing them, it looks like there are some diffferences between the distribution of functional wells and non functional wells.")
 ```
