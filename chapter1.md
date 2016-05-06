@@ -3,7 +3,7 @@ title_meta  : Chapter 1
 title       : Introduction to DrivenData Water Pumps Challenge
 description : "In this first chapter you will be introduced to DataCamp's interactive interface and the Titanic data set. Once you're familiar with the Kaggle data sets, you make your first predictions using survival rate, gender data, as well as age data."
 
---- type:NormalExercise xp:100 skills:1 key:a1ddff3dced9bc827f83d0a600e31649e732768b
+--- type:NormalExercise xp:100 skills:1
 ## How it works
 
 Welcome to our tutorial on the Driven Data's Water Pumps challenge. Here you will learn how to get started with the 
@@ -51,7 +51,7 @@ test_output_contains("23", incorrect_msg = "Make sure to add a line of R code, t
 success_msg("Awesome! See how the console shows the result of the R code you submitted? Now that you're familiar with the interface, let's get down to R business!")
 ```
 
---- type:NormalExercise xp:100 skills:1,3 key:5ac7cf5cee32ae6b323cfb298ebfae05fc4e7bf4
+--- type:NormalExercise xp:100 skills:1,3 
 ## Data Mining the Water Table
 
 Using data from Taarifa and the Tanzanian Ministry of Water, can you predict which pumps are functional, which need some repairs, and which don't work at all? This is an intermediate-level practice competition. Predict one of these three classes based on a number of variables about what kind of pump is operating, when it was installed, and how it is managed. A smart understanding of which waterpoints will fail can improve maintenance operations and ensure that clean, potable water is available to communities across Tanzania.
@@ -147,7 +147,7 @@ test_error()
 success_msg("Well done! Now that your data is loaded in, you can start exploring it!.")
 ```
 
---- type:MultipleChoiceExercise xp:50 skills:1,3 key:5ba0cacb49934cf4d62a10a7fb9287f6fef57a1e
+--- type:MultipleChoiceExercise xp:50 skills:1,3 
 ## Understanding your data
 
 Before starting with the actual analysis, it's important to understand the structure of your data. The variables loaded in the previous exercise, `train_labels`, `train_values`, and `test_values`, are data frames, R's way of representing a dataset. You can easily explore a data frame using the function `str()`. `str()` gives you information such as the data types in the data frame (e.g. `int` for integer), the number of observations, and the number of variables. It is a great way to get a feel for the contents of the data frame.
@@ -177,7 +177,7 @@ msg4 <- "Great job! In case you want to learn more on data frames, <a href='http
 test_mc(correct =4, feedback_msgs = c(msg1, msg2, msg3, msg4))
 ```
 
---- type:NormalExercise xp:100 skills:1 key:aa1b373e5055f70cb212be1eb593927ff1d48cfa
+--- type:NormalExercise xp:100 skills:1
 ## Water table()
 
 As you can see from the last exercise, these are large datasets with a bunch of variables. To simplify things, it is common to merge the independent values and the dependent labels into one data frame. This can be acheived using the `merge()` command on `train_values` and `train_labels`. Going forward, this will make it easier when modeling and manipulating the data frame. 
@@ -276,7 +276,7 @@ test_error()
 success_msg("Well done! It looks like if the quantity variable is 'dry', it is likely that the pump is not functional. We will continue to explore some more variables next.")
 ```
 
---- type:NormalExercise xp:100 skills:1 key:aff8037b847c2c5c2e7f1db185813bf6c0769d3a
+--- type:NormalExercise xp:100 skills:1
 ## Explore and Visualize
 
 Another great way to explore your data is to create a few visualizations. This can help you better understand the structure and potential limitations of particular variables. 
@@ -363,7 +363,7 @@ test_error()
 success_msg("Awesome! Now let's look at a few more visualizations.")
 ```
 
---- type:NormalExercise xp:100 skills: 1,6 key:5da127ed17a54aa18d130798b9662f7e21b14cd1
+--- type:NormalExercise xp:100 skills: 1,6
 ## Continuous Variable Viz
 
 You just made some great plots that compared some categorical variables based on the well status. Now you can look a some ordinal or continuous variables using `ggplot2` and `geom_histogram`. 
@@ -427,8 +427,95 @@ ggplot(subset(train, construction_year > 0), aes(x = construction_year)) +
 
 *** =sct
 ```{r,eval=FALSE}
-test_ggplot(1)
-test_ggplot(2)
+test_ggplot(1, aes_fail_msg = "Don't forget to fill in the `x` value in the aesthetic with `construction_year` for the first plot!")
+test_ggplot(2, aes_fail_msg = "Don't forget to fill in the `x` value in the aesthetic with `construction_year` for the first plot!", facet_fail_msg = "Look at the `facet_grid()` layer on the first plot and fill in the same variable for the second plot.")
 test_error()
-success_msg("Great work! As you can see, the plot showed us that there were a lot of missing values coded as 0's. After removing them, it looks like there are some diffferences between the distribution of functional wells and non functional wells.")
+success_msg("Great work! As you can see, the first plot showed us that there were a lot of missing values coded as 0's. After subsetting them out, we could see that there may some diffferences between the distribution of functional wells and non functional wells.")
+```
+
+--- type:NormalExercise xp:100 skills: 1,6 key:5da127ed17a54aa18d130798b9662f7e21b14cd1
+## Making your first predictions
+
+Two other variables that would be worth checking out would be `longitude` and `latitude`. It would make sense that where the wells are located could be connected to probability that they are functioning. We could look at a histogram of the two variables, but we could be missing some major features of the data. 
+
+First, you can start off creating a scatter plot for `longitude` and `latitude` to see where the wells are located throughout the country. Then see if there is any visible clustering around certain areas or landmarks by making the color of the points correspond to the values in `status_group`. 
+
+Next, you can use the googleVis package to create a map of Tanzania and overlay the locations of the wells. This will give a more visually appealling representation of the waterpoint locations within the country. There are so many datapoints within `train` that the plot will take a long time to generate. To make things simpler, you can simply plot the first 1000 points in `train`.
+
+
+*** =instructions 
+- Create a scatter plot with `latitude` as the x-axis and `longitude` as the y-axis. You can subset out datapoints that are missing (and coded as 0's here). Also add `status_group` as the color variable in the plot.
+- Use `googleVis` to plot the data on top of a map of Tanzania. To do this, code has been provided that creates a variable `longlat` that conforms to the inputs for `gvis GeoChart`. Plot the resulting map produced by `gvisGeoChart`
+
+*** =hint
+- Fill in the blanks for ggplot, the rest of the code is ready to produce the scatter plot!
+- Plot the googleVis map given in the sample code with `plot()`
+
+
+*** =pre_exercise_code
+```{r,eval=FALSE}
+load(url("http://s3.amazonaws.com/assets.datacamp.com/production/course_1032/datasets/driven_data_ex3.Rdata"))
+train <- merge(train_labels, train_values)
+train$Size <- 1
+```
+
+*** =sample_code
+```{r,eval=FALSE}
+library(ggplot2)
+library(googleVis)
+
+# Create scatter plot: latitude vs longitude with color as status_group
+ggplot(subset(train, latitude < 0 & longitude > 0), aes(x=___, y=___, color=___)) + 
+  geom_point(shape=1) + 
+  theme(legend.position = "top")
+
+# Create a column 'latlong' to input into gvisGeoChart
+train$latlong <- paste(round(train$latitude,2), round(train$longitude, 2), sep=":")
+
+# Use gvisGeoChart to create an interactive map with well locations
+wells_map <- gvisGeoChart(train[1:1000,], locationvar = "latlong", 
+                          colorvar = "status_group", sizevar = "Size", 
+                          options = list(region = "TZ"))
+
+# Plot wells_map
+
+
+```
+
+*** =solution
+```{r,eval=FALSE}
+library(ggplot2)
+library(googleVis)
+
+# Create scatter plot: latitude vs longitude with color as status_group
+ggplot(subset(train, latitude < 0 & longitude > 0), aes(x=latitude, y=longitude, color=status_group)) + 
+  geom_point(shape=1) + 
+  theme(legend.position = "top")
+
+# Create a column 'latlong' to input into gvisGeoChart
+train$latlong <- paste(round(train$latitude,2), round(train$longitude, 2), sep=":")
+
+# Use gvisGeoChart to create an interactive map with well locations
+wells_map <- gvisGeoChart(train[1:1000,], locationvar = "latlong", 
+                          colorvar = "status_group", sizevar = "Size", 
+                          options = list(region = "TZ"))
+# Plot wells_map
+plot(wells_map)
+
+```
+
+*** =sct
+```{r,eval=FALSE}
+test_ggplot(1, aes_fail_msg = "Don't forget to fill in the `x` value in the aesthetic with `latitude`, `y` with `longitude` and, `color` with `status_group` for  for the first plot!")
+
+test_function("gvisMotionChart", c("data"), eval = F, 
+              incorrect_msg = "You do not need to change the inputs for `gvisGeoChart`, simply use the code provided.")
+
+test_function("plot", "x", eval = F, 
+              not_called_msg = "Do not forget to plot your new interactive map with `plot()`!", 
+              incorrect_msg = "Make sure to pass `wells_map` to the `plot()` function.")
+
+test_error()
+
+success_msg("Awesome job! ")
 ```
