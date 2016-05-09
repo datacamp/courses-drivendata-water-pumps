@@ -1,7 +1,7 @@
 ---
 title_meta  : Chapter 1
-title       : Introduction to DrivenData Water Pumps Challenge
-description : "In this first chapter you will be introduced to DataCamp's interactive interface and the Titanic data set. Once you're familiar with the Kaggle data sets, you make your first predictions using survival rate, gender data, as well as age data."
+title       : Intro to DrivenData Water Pumps
+description : "In this first chapter you will be introduced to DataCamp's interactive interface and the DrivenData Water Pumps data set. You will then evaluate the structure of the data by visualizing some the data's important features."
 
 --- type:NormalExercise xp:100 skills:1 key:a1ddff3dced9bc827f83d0a600e31649e732768b
 ## How it works
