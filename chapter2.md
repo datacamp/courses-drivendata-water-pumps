@@ -3,19 +3,19 @@ title_meta  : Chapter 2
 title       : Predict and Measure
 description : "In this chapter we will use a common machine learning technique to make and evaluate predictions."
 
---- type:NormalExercise xp:100 skills:1 key:040bca4c1f
+--- type:NormalExercise xp:100 skills:1
 ## First Prediction
 
 Let's start making a few predictions using a common machine learning technique called a Random Forest. Although it is a fairly complex technique, it is often a good place to start since it can handle a large number of features, it is fast, and can help quickly estimate which variables are important. 
 
-For a Random Forest analysis in R you make use of the `randomForest()` function in the [`randomForest`](http://www.rdocumentation.org/packages/randomForest) package. 
+To create a Random Forest analysis in R, you make use of the `randomForest()` function in the aptly named [`randomForest`](http://www.rdocumentation.org/packages/randomForest) package. 
 
-- First your provide the `formula`. There is no argument `class` here to inform the function you're dealing with predicting a categorical variable, so you need to turn `status_group` into a factor with three levels: `as.factor(status_group) ~ ... `
+- First, you provide the `formula`. There is no argument `class` here to inform the function that you're dealing with predicting a categorical variable, so you need to turn `status_group` into a factor with three levels: `as.factor(status_group) ~ ... `
 - The `data` argument takes the `train` data frame.
-- When you put the `importance` argument to `TRUE` you can inspect variable importance.
+- When the `importance` argument is set to `TRUE`, you can inspect variable importance.
 - The `ntree` argument specifies the number of trees to grow. Limit these when having only limited computational power at your disposal. 
 
-To end, since Random Forest uses randomization, you set a seed like this `set.seed(42)` to assure reproducibility of your results. Once the model is constructed, you can use the prediction function `predict()`.
+To end, since Random Forest uses randomization, you set a seed using `set.seed(42)` to assure reproducibility of your results. Once the model is constructed, you can use the prediction function `predict()`.
 
 
 Here, you will use the following formula as an input to `randomForest`:
@@ -33,7 +33,7 @@ As you can see, these are variables that you have examined in the previous exerc
 - Inspect the first few rows of `pred_forest_train` using `head()`
 
 *** =hint
-- Remember to set the `data` argument to `train`, the `importance` argument to `TRUE`, the `ntree` argument to `10` and the `nodesize` argument to 2.
+- Remember to set the `data` argument to `train`, the `importance` to `TRUE`, the `ntree` to `10` and the `nodesize` argument to 2.
 - Make sure to call `head()` to observe the resulting output from your predictions.
 
 *** =pre_exercise_code
@@ -97,7 +97,7 @@ success_msg("Nice! Let's look at the results a little more closely in the next f
             
 ```
 
---- type:MultipleChoiceExercise xp:50 skills:1,3  key:c9f8a3eff8
+--- type:MultipleChoiceExercise xp:50 skills:1,3 
 ## Evaluating the Random Forest
 
 You can still access your first random forest with `model_forest` and predictions as `pred_forest_train`. You can use the library `caret` to view the confusion matrix for the model. This will tell you the model's accuracy on the training set as well as other performance measures like sensitivity and specificity. You can see this by running the following code:
@@ -137,7 +137,7 @@ msg4 <- "Not quite... Maybe have a look at the hint."
 test_mc(correct =2, feedback_msgs = c(msg1, msg2, msg3, msg4))
 ```
 
---- type:MultipleChoiceExercise xp:50 skills:1,3  key:dd074c405b
+--- type:MultipleChoiceExercise xp:50 skills:1,3 
 ## Variable Importance
 
 Now it is time to take a look at how important the inputs were to your predictive model. Here, you can use:
@@ -145,7 +145,7 @@ Now it is time to take a look at how important the inputs were to your predictiv
 importance(model_forest)
 varImpPlot(model_forest)
 ```
-To assess the predictive utility of the given variables in the model. According to the output, what variable is LEAST important based on mean decrease in accuracy?
+To assess the predictive utility of the given variables in the model. According to the output, what variable is LEAST important based on the mean decrease in accuracy?
 
 Note: The more the accuracy of the random forest decreases due to the exclusion (or permutation) of a single variable, the more important that variable is deemed. Variables with a large mean decrease in accuracy are more important for classification of the data. 
 
@@ -178,14 +178,14 @@ msg4 <- "Awesome! It looks like the `quality_group` variable had the least predi
 test_mc(correct =4, feedback_msgs = c(msg1, msg2, msg3, msg4))
 ```
 
---- type:NormalExercise xp:100 skills:1 key:c4a5ba3436
+--- type:NormalExercise xp:100 skills:1
 ## Adding Features
 
-There are a lot of features and many of them will not be useful inputs to commonly used machine learning techniques without some adjustments. That is why this data set is all about feature selection engineering. You have already made a pretty solid predictions only using a handful of variables. Now it is time to go through an example of some feature engineering that can help boost your prediction accuracy. 
+There are a lot of features and many of them will not be useful inputs to commonly used machine learning techniques without some adjustments. That is why this data set is all about feature selection engineering. You have already made a pretty solid prediction only using a handful of variables. Now it is time to go through an example of some feature engineering that can help boost your prediction accuracy. 
 
 We can examine the variable `installer` by using `summary(train$installer)`. We can see that there are a lot of terms that are likely the same installer, but have differenct names. For example, there are many instances that refer to 'Government': 'Gover', GOVER', 'Government', 'Govt' etc. All of these will be considered different factors unless you find a way to aggregate them. One quick but simplistic way to do this would be to take the first 3 letters of each factor and make them lower case. Then, we can aggregate the terms that are most frequent and only use those as predictors, putting all other variables into an 'other' category.
 
-When you create a new features like this, you have to remember to make the same one on the `test` set. That way, you can make a prediction on the `test` set using the same model.
+When you create new features like this, you have to remember to make the same one on the `test` set. That way, you can make a prediction on the `test` set using the same model.
 
 
 *** =instructions
@@ -270,7 +270,7 @@ test_error()
 success_msg("Great work! It looks like there are a few installer groups that show a high proportion of non functional wells. In the next exercise you will see how the new variable performs and prepare your data for submission.")
 ```
 
---- type:NormalExercise xp:100 skills:1 key:c16d27fe78
+--- type:NormalExercise xp:100 skills:1
 ## Predict, Submit and Next Steps
 
 Now that you have created the new variable `install_3`, it is time to make a new prediction. Then you can observe the importance and statistics to see how it performs.
@@ -280,7 +280,7 @@ Then, you can use the model to create predictions based on the test set. These r
 This has only been an introduction to the water pumps challenge; there are still many ways to improve and refine your predictions. Here are a few suggestions for some next steps:
 
 - More feature selection: Look through the features in `train` and continue to add features that may have predictive power.
-- More feature engineering: Look to features that can be engineered to create more useful predictors. There are many location and character variables that could be refined to improve you predictions.
+- More feature engineering: Look to features that can be engineered to create more useful predictors. There are many location and character variables that could be refined to improve your predictions.
 - Improve the random forest: One way to improve the accuracy is to increase the number of trees produced by the random forest and experiment with increasing and decreasing the minimum node size.
 - Look to new machine learning techniques: There are many other machine learning techniques that could be utilzed to improve these models. KNN, SVM and logistic regression models and ensembles could give you the edge to climb the leaderboard.
 
