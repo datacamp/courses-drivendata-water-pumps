@@ -1,552 +1,377 @@
 ---
-title_meta  : Chapter 1
-title       : Intro to DrivenData Water Pumps
-description : "In this first chapter, you will be introduced to DataCamp's interactive interface and the DrivenData Water Pumps data set. You will then evaluate the structure of the data by visualizing some the data's important features."
+title_meta  : Chapter 2
+title       : Predict and Measure
+description : "In this chapter we will use a common machine learning technique to make and evaluate predictions."
 
---- type:NormalExercise xp:100 skills:1 key:a1ddff3dced9bc827f83d0a600e31649e732768b
-## How it works
+--- type:NormalExercise xp:100 skills:1
+## First Prediction
 
-Welcome to our tutorial on the Driven Data's Water Pumps challenge. Here you will learn how to get started with the 
-competition using R. In case you're new to R, it's recommended that you first take our free [Introduction to R Tutorial](https://www.datacamp.com/courses/free-introduction-to-r). Furthermore, while not required, familiarity with machine learning techniques is a plus so you can get the maximum out of this tutorial.
+Let's start making a few predictions using a common machine learning technique called a Random Forest. Although it is a fairly complex technique, it is often a good place to start since it can handle a large number of features, it is fast, and can help quickly estimate which variables are important. 
 
-In the editor on the right, you should type R code to solve the exercises. When you hit the 'Submit Answer' button, every line of code is interpreted and executed by R and you get a message whether or not your code was correct. The output of your R code is shown in the console in the lower right corner. R makes use of the `#` sign to add comments; these lines are not run as R code, so they will not influence your result.
+To create a Random Forest analysis in R, you make use of the `randomForest()` function in the aptly named [`randomForest`](http://www.rdocumentation.org/packages/randomForest) package. 
 
-You can also execute R commands straight in the console. This is a good way to experiment with R code, as your submission is not checked for correctness.
+- First, you provide the `formula`. There is no argument `class` here to inform the function that you're dealing with predicting a categorical variable, so you need to turn `status_group` into a factor with three levels: `as.factor(status_group) ~ ... `
+- The `data` argument takes the `train` data frame.
+- When the `importance` argument is set to `TRUE`, you can inspect variable importance.
+- The `ntree` argument specifies the number of trees to grow. Limit these when having only limited computational power at your disposal. 
+
+To end, since Random Forest uses randomization, you set a seed using `set.seed(42)` to assure reproducibility of your results. Once the model is constructed, you can use the prediction function `predict()`.
+
+
+Here, you will use the following formula as an input to `randomForest`:
+
+```
+as.factor(status_group) ~ longitude + latitude + extraction_type_group +                                     quality_group + quantity + waterpoint_type +                                       construction_year
+```
+As you can see, these are variables that you have examined in the previous exercises. Now it is time to see how well they work as predictor variables.
+
 
 *** =instructions
-- In the editor on the right, there is already some sample code. Can you see which lines are actual R code and which are comments?
-- Add a line of code that calculates the sum of 8 and 15, and hit the 'Submit Answer' button.
+- Perform a Random Forest and name the model `model_forest`. Use the variables provided in the sample code. Train the model on the data set `train`.
+- Set the number of trees to grow to 10, make sure you can inspect variable importance (set to TRUE), and set node size to 2.
+- Make a prediction (`pred_forest_train`) on the test set using the `predict()` function with inputs of `model_forest` and `train`
+- Inspect the first few rows of `pred_forest_train` using `head()`
 
 *** =hint
-Just add a line of R code that calculates the sum of 6 and 12, just like the example in the sample code!
+- Remember to set the `data` argument to `train`, the `importance` to `TRUE`, the `ntree` to `10` and the `nodesize` argument to 2.
+- Make sure to call `head()` to observe the resulting output from your predictions.
 
 *** =pre_exercise_code
 ```{r eval=FALSE}
-# no pec
+load(url("http://s3.amazonaws.com/assets.datacamp.com/production/course_1032/datasets/driven_data_ex3.Rdata"))
+train <- merge(train_labels, train_values)
 ```
 
 *** =sample_code
 ```{r eval=FALSE}
-# Calculate 3 * 4
-3 * 4
+# Load the randomForest library
+library(randomForest)
 
-# Calculate 8 + 15
+# Set seed and create a random forest classifier
+set.seed(42)
+model_forest <- randomForest(as.factor(status_group) ~ longitude + latitude + extraction_type_group + quality_group + quantity + waterpoint_type + construction_year, data = ___, importance = ___, ntree = ___, nodesize = ___)
+
+# Use random forest to predict the values in train
+pred_forest_train <- predict(___, ___)
+
+# Observe the first few rows of your predictions
 
 
 ```
 
 *** =solution
 ```{r eval=FALSE}
-# Calculate 3 + 4
-3 * 4
+# Load the randomForest library
+library(randomForest)
 
-# Calculate 8 + 15
-8 + 15
+# Set seed and create a random forest classifier
+set.seed(42)
+model_forest <- randomForest(as.factor(status_group) ~ longitude + latitude + extraction_type_group + quality_group + quantity + waterpoint_type + construction_year,
+                             data = train, importance = TRUE, ntree = 10, nodesize = 2)
+
+# Use random forest to predict the values in train
+pred_forest_train <- predict(model_forest, train)
+
+# Observe the first few rows of your predictions
+head(pred_forest_train)
 ```
 
 *** =sct
 ```{r eval=FALSE}
-test_output_contains("12", incorrect_msg = "Do not remove the line of R code that calculates the product of 3 and 4. Instead, just add another line that calculates the sum of 8 and 15.")
-test_output_contains("23", incorrect_msg = "Make sure to add a line of R code, that calculates the sum of 8 and 15. Do not start the line with a `#`, otherwise, your R code will not be executed!")
-success_msg("Awesome! See how the console shows the result of the R code you submitted? Now that you're familiar with the interface, let's get down to R business!")
+test_function("randomForest", args = "x", 
+              incorrect_msg = "Make sure not to change the variables in the `formula` provided in the sample code!")
+
+test_function("randomForest", args = c("data", "importance", "ntree", "nodesize"),
+              incorrect_msg = "Remember to set the `data` argument to `train`, the `importance` argument to `TRUE`, the `ntree` argument to `10` and the `nodesize` argument to 2.")
+
+test_data_frame("model_forest", columns = "terms",
+                incorrect_msg = "`my_forest` is not correct. Maybe check the hint on how to call the `randomForest()` function.")
+
+test_function("predict", args = "object", eval = FALSE,
+              incorrect_msg = "When calling `predict()`, you need to provide two arguments here: the random forest object and the train data set.") 
+
+test_object("pred_forest_train", 
+            incorrect_msg = paste("Looks like `pred_forest_train` is calculated incorrectly. Use `model_forest` and `train` as inputs in `predict()`."))
+
+test_output_contains("head(pred_forest_train)", incorrect_msg = "Don't forget to observe the first few rows of your prediction using `head()`.")
+
+success_msg("Nice! Let's look at the results a little more closely in the next few exercises.")
+            
 ```
 
---- type:NormalExercise xp:100 skills:1,3  key:9c8a4aa760
-## Data Mining the Water Table
+--- type:MultipleChoiceExercise xp:50 skills:1,3 
+## Evaluating the Random Forest
 
-Using data from Taarifa and the Tanzanian Ministry of Water, can you predict which pumps are functional, which need some repairs, and which don't work at all? This is an intermediate-level practice competition. Predict one of these three classes based on a number of variables about what kind of pump is operating, when it was installed, and how it is managed. A smart understanding of which water points will fail can improve maintenance operations and ensure that clean, potable water is available to communities across Tanzania.
+You can still access your first random forest with `model_forest` and predictions as `pred_forest_train`. You can use the library `caret` to view the confusion matrix for the model. This will tell you the model's accuracy on the training set as well as other performance measures like sensitivity and specificity. You can see this by running the following code:
 
-Let's start with loading in the training and testing set into your R environment. You will use the training set to build your model, and the test set to validate it. The URLs for the 3 `csv` files are already available as variables in the sample code. You can load this data with the `read.csv()` function: simply pass the defined URL variables. We will inspect these new variables in the following exercises. Here is a quick explanation of the variables that you are importing:
-
-- `train_values` corresponds to the independent variables for the training set.
-- `train_labels` contains    the dependent variable (`status_group`) for each of the rows in `train_values`
-- `test_values` is the independent variables that need predictions
+```
+library(caret)
+confusionMatrix(pred_forest_train, train$status_group)
+```
+Based on the output, what was the positive predictive value for the `non functional` class?
 
 *** =instructions
-- Load the [training set values](http://s3.amazonaws.com/drivendata/data/7/public/4910797b-ee55-40a7-8668-10efd5c1b960.csv), [training set labels](http://s3.amazonaws.com/drivendata/data/7/public/0bf8bc6e-30d0-4c50-956a-603fc693d966.csv), and [test set values](http://s3.amazonaws.com/drivendata/data/7/public/702ddfc5-68cd-4d1d-a0de-f5f566f76d91.csv) and assign these to three variables: `train_values`, `train_labels` and `test_values`.
-
-*** =hint
-- An example of proper usage of `read.csv` is provided for you in the sample code!
-- Use similar code to assign `train_set_values` and `test_set_values`
-
-*** =pre_exercise_code
-```{r,eval=FALSE}
-# no pec
-
-```
-
-*** =sample_code
-```{r,eval=FALSE}
-# Define train_values_url
-train_values_url <- "http://s3.amazonaws.com/drivendata/data/7/public/4910797b-ee55-40a7-8668-10efd5c1b960.csv"
-
-# Import train_values
-train_values <- read.csv(train_values_url)
-
-# Define train_labels_url
-train_labels_url <- "http://s3.amazonaws.com/drivendata/data/7/public/0bf8bc6e-30d0-4c50-956a-603fc693d966.csv"
-
-# Import train_labels
-train_labels <- 
-
-# Define test_values_url
-test_values_url <- "http://s3.amazonaws.com/drivendata/data/7/public/702ddfc5-68cd-4d1d-a0de-f5f566f76d91.csv"
-
-# Import test_values
-test_values <- 
-
-```
-
-*** =solution
-```{r,eval=FALSE}
-# Define train_values_url
-train_values_url <- "http://s3.amazonaws.com/drivendata/data/7/public/4910797b-ee55-40a7-8668-10efd5c1b960.csv"
-
-# Import train_values
-train_values <- read.csv(train_values_url)
-
-# Define train_labels_url
-train_labels_url <- "http://s3.amazonaws.com/drivendata/data/7/public/0bf8bc6e-30d0-4c50-956a-603fc693d966.csv"
-
-# Import train_labels
-train_labels <- read.csv(train_labels_url)
-
-# Define test_values_url
-test_values_url <- "http://s3.amazonaws.com/drivendata/data/7/public/702ddfc5-68cd-4d1d-a0de-f5f566f76d91.csv"
-
-# Import test_values
-test_values <- read.csv(test_values_url)
-
-```
-
-*** =sct
-```{r,eval=FALSE}
-
-msg <- "Do not change the code that specifies the URLs of the 3 csvs. You can reset the sample code to its original state by pressing the reset button next to 'Submit Answer'."
-lapply(c("train_values_url", "train_labels_url", "test_values_url"), test_object, undefined_msg = msg, incorrect_msg = msg)
-
-test_correct({
-  test_object("train_values")
-}, {
-  test_function("read.csv", args = "file", index = 1, incorrect_msg = "Use `read.csv(train_values_url)` to create `train_values`.")
-})
-
-test_correct({
-  test_object("train_labels")
-}, {
-  test_function("read.csv", args = "file", index = 2, incorrect_msg = "Use `read.csv(train_labels_url)` to create `train_labels`.")
-})
-
-test_correct({
-  test_object("test_values")
-}, {
-  test_function("read.csv", args = "file", index = 3, incorrect_msg = "Use `read.csv(test_values_url)` to create `test_values`.")
-})
-
-test_error()
-success_msg("Well done! Now that your data is loaded in, you can start exploring it!")
-```
-
---- type:MultipleChoiceExercise xp:50 skills:1,3  key:0995ea5cca
-## Understanding your data
-
-Before starting with the actual analysis, it's important to understand the structure of your data. The variables loaded in the previous exercise, `train_labels`, `train_values`, and `test_values`, are data frames, R's way of representing a dataset. You can easily explore a data frame using the function `str()`. `str()` gives you information such as the data types in the data frame (e.g. `int` for integer), the number of observations, and the number of variables. It is a great way to get a feel for the contents of the data frame.
-
-The 3 data frames are already loaded into your workspace. Apply `str()` to each variable to see its dimensions and basic composition. Which of the following statements is correct?
-
-*** =instructions
-- `train_labels` has 14850 observations and 40 variables.
-- `train_labels` has 59400 observations and 2 variables.
-- `train_values` has 14850 observations and 2 variables.
-- `train_values` has 59400 observations and 40 variables.
+- 0.87
+- 0.92
+- 0.81
+- 0.85
   
 *** =hint
-To see the structure of the `test_values` variable you can make use of `str(test_values)`.
+Look at the 'Statistics by Class' area of the of the output. Then find the column for the `non functional` class. 
 
 *** =pre_exercise_code
 ```{r,eval=FALSE}
 load(url("http://s3.amazonaws.com/assets.datacamp.com/production/course_1032/datasets/driven_data_ex3.Rdata"))
+train <- merge(train_labels, train_values)
+library(randomForest)
+set.seed(42)
+model_forest <- randomForest(as.factor(status_group) ~ longitude + latitude + extraction_type_group + quality_group + quantity + waterpoint_type + construction_year,
+                             data = train, importance = TRUE, ntree = 10, nodesize = 2)
+pred_forest_train <- predict(model_forest, train)
 ```
 
 *** =sct
 ```{r,eval=FALSE}
 msg1 <- "Wrong, try again. Maybe have a look at the hint."
-msg2 <- "Not so good... Maybe have a look at the hint."
+msg2 <- "Very good! That is a pretty high predictive value. The overall accuracy of your model on the training set was 0.84. This random forest would have performed at a 0.79 on the test set if you submitted it to DrivenData."
 msg3 <- "Incorrect. Maybe have a look at the hint."
-msg4 <- "Great job! In case you want to learn more on data frames, <a href='https://www.datacamp.com/courses/free-introduction-to-r'>check out the data frames chapter in DataCamp's introduction to R course.</a>"
+msg4 <- "Not quite... Maybe have a look at the hint."
+test_mc(correct =2, feedback_msgs = c(msg1, msg2, msg3, msg4))
+```
+
+--- type:MultipleChoiceExercise xp:50 skills:1,3 
+## Variable Importance
+
+Now it is time to take a look at how important the inputs were to your predictive model. Here, you can use:
+
+```
+importance(model_forest)
+
+varImpPlot(model_forest)
+```
+
+to assess the predictive utility of the given variables in the model. According to the output, what variable is LEAST important based on the mean decrease in accuracy?
+
+Note: The more the accuracy of the random forest decreases due to the exclusion (or permutation) of a single variable, the more important that variable is deemed. Variables with a large mean decrease in accuracy are more important for classification of the data. 
+
+*** =instructions
+- quantity
+- construction_year
+- latitude
+- quality_group
+  
+*** =hint
+Look at the 'Statistics by Class' area of the of the output. Then find the column for the `non functional` class. 
+
+*** =pre_exercise_code
+```{r,eval=FALSE}
+load(url("http://s3.amazonaws.com/assets.datacamp.com/production/course_1032/datasets/driven_data_ex3.Rdata"))
+train <- merge(train_labels, train_values)
+library(randomForest)
+set.seed(42)
+model_forest <- randomForest(as.factor(status_group) ~ longitude + latitude + extraction_type_group + quality_group + quantity + waterpoint_type + construction_year,
+                             data = train, importance = TRUE, ntree = 10, nodesize = 2)
+pred_forest_train <- predict(model_forest, train)
+```
+
+*** =sct
+```{r,eval=FALSE}
+msg1 <- "Wrong, try again. Maybe have a look at the hint."
+msg2 <- "Not quite... Maybe have a look at the hint."
+msg3 <- "Incorrect. Maybe have a look at the hint."
+msg4 <- "Awesome! It looks like the `quality_group` variable had the least predictive power in this model. The `quanity` variable seemed to be the most useful variable in this model."
 test_mc(correct =4, feedback_msgs = c(msg1, msg2, msg3, msg4))
 ```
 
---- type:NormalExercise xp:100 skills:1 key:3c4736b75c
-## Water table()
+--- type:NormalExercise xp:100 skills:1
+## Adding Features
 
-As you can see from the last exercise, these are large datasets with a bunch of variables. To simplify things, it is common to merge the independent values and the dependent labels into one data frame. This can be acheived using the `merge()` command on `train_values` and `train_labels`. Going forward, this will make it easier when modeling and manipulating the data frame. 
+There are a lot of features in this data set, and many of them will not be useful inputs to commonly for machine learning techniques without some adjustments. That is why this data set is all about feature selection and feature engineering. You have already made a pretty solid prediction only using a handful of variables. Now it is time to go through an example of some feature engineering that can help boost your prediction accuracy. 
 
-The next steps will be to begin to examine the features of the data set. The objective of this challenge is to predict whether or not a water pump is functional for the test set. We are given the status of the pumps for the `train` data frame as the column `status_group`. 
+We can examine the variable `installer` by using `summary(train$installer)`. We can see that there are a lot of terms that are likely the same installer, but have differenct names. For example, there are many instances that refer to 'Government': 'Gover', 'GOVER', 'Government', 'Govt' etc. All of these will be considered different factors unless you find a way to aggregate them. One quick, and simplistic, way to do this would be to take the first 3 letters of each factor and make them lower case. Then, we can aggregate the terms that are most frequent and only use those as predictors, putting all other variables into an 'other' category.
 
-So, how many water pumps in the `train` data frame are functional? One way to see this is to use the `table()` command. It can also be used with the `$`-operator to select a single column of data:
-
-```
-# absolute numbers
-table(train$status_group) 
-
-# proportions
-prop.table(table(train$status_group))
-``` 
-
-If you run those commands in the console, you will see that 38.4% of water pumps in the `train` data frame are non-functional. It would also be helpful to see a two-way table comparing a variable with `status_group` to see if it may have predictive value. For example:
-
-```
-# absolute numbers
-table(train$payment, train$status_group)
-
-# proportions
-prop.table(table(train$payment, train$status_group), margin = 1)
-
-```
-
-The second argument in `prop.table()` is called `margin` and can be set to either 1 or 2, determining whether the proportions are calculated row-wise or column-wise.
+When you create new features like this, you have to remember to make the same one on the `test` set. That way, you can make a prediction on the `test` set using the same model.
 
 
 *** =instructions
-- Calculate the pump status in absolute numbers using `table()` on `train`.
-- Calculate the pump status as proportions by wrapping `prop.table()` around the previous `table()` call.
-- Do a two-way comparison on the number of functioning water pumps with the `quantity` variable, in absolute numbers. Again, use the `train` data frame.
+- Check out the code that defines the new variable `install_3`
+- Do a two-way comparison on the number of functioning water pumps with the `install_3` variable, in absolute numbers. Again, use the `train` data frame.
 - Convert the numbers to row-wise proportions.
+- Inspect the code that creates `install_3` on the `test` set for later testing.
 
 *** =hint
-- The code for the first, second, and third instruction is already given in the assignment!
-- For the fourth instruction, wrap `prop.table()` around the `table()` call for the third instruction. Make sure to set the second argument of `prop.table()` correctly!
+- Use `table(train$install_3, train$status_group)` and `prop_table()`.
 
 *** =pre_exercise_code
 ```{r,eval=FALSE}
 load(url("http://s3.amazonaws.com/assets.datacamp.com/production/course_1032/datasets/driven_data_ex3.Rdata"))
+train <- merge(train_labels, train_values)
 ```
 
 *** =sample_code
 ```{r,eval=FALSE}
-# Merge data frames to create the data frame train
-train <- merge(train_labels, train_values)
+# Observe the installer variable
+summary(train$installer)
 
-# Look at the number of pumps in each functional status group
-table(___)
+# Make installer lowercase, take first 3 letters as a sub string
+train$install_3 <- substr(tolower(train$installer),1,3)
+train$install_3[train$install_3 %in% c(" ", "", "0", "_", "-")] <- "other"
 
-# As proportions
+# Take the top 15 substrings from above by occurance frequency
+install_top_15 <- names(summary(as.factor(train$install_3)))[1:15]
+train$install_3[!(train$install_3 %in% install_top_15)] <- "other"
+train$install_3 <- as.factor(train$install_3)
 
-  
-# Table of the quantity variable vs the status of the pumps
+# Table of the install_3 variable vs the status of the pumps
+table(___, ___)
 
-
-# As row-wise proportions, quantity vs status_group
+# As row-wise proportions, install_3 vs status_group
 prop.table(table(___, ___), margin = 1)
+
+# Create install_3 for the test set using same top 15 from above
+test$install_3 <- substr(tolower(test$installer),1,3)
+test$install_3[test$install_3 %in% c(" ", "", "0", "_", "-")] <- "other"
+test$install_3[!(test$install_3 %in% install_top_15)] <- "other"
+test$install_3 <- as.factor(test$install_3)
 ```
 
 *** =solution
 ```{r,eval=FALSE}
-# Merge data frames to create the data frame train
-train <- merge(train_labels, train_values)
+# Observe the installer variable
+summary(train$installer)
 
-# Look at the number of pumps in each functional category
-table(train$status_group)
+# Make installer lowercase, take first 3 letters as a sub string
+train$install_3 <- substr(tolower(train$installer),1,3)
+train$install_3[train$install_3 %in% c(" ", "", "0", "_", "-")] <- "other"
 
-# As proportions
-prop.table(table(train$status_group))
-  
-# Table of the quantity variable vs the status of the pumps
-table(train$quantity, train$status_group)
+# Take the top 15 substrings from above by occurance frequency
+install_top_15 <- names(summary(as.factor(train$install_3)))[1:15]
+train$install_3[!(train$install_3 %in% install_top_15)] <- "other"
+train$install_3 <- as.factor(train$install_3)
 
-# As row-wise proportions
-prop.table(table(train$quantity, train$status_group), margin = 1)
+# Table of the install_3 variable vs the status of the pumps
+table(train$install_3, train$status_group)
 
+# As row-wise proportions, install_3 vs status_group
+prop.table(table(train$install_3, train$status_group), margin = 1)
+
+# Create install_3 for the test set using same top 15 from above
+test$install_3 <- substr(tolower(test$installer),1,3)
+test$install_3[test$install_3 %in% c(" ", "", "0", "_", "-")] <- "other"
+test$install_3[!(test$install_3 %in% install_top_15)] <- "other"
+test$install_3 <- as.factor(test$install_3)
 
 ```
 
 *** =sct
 ```{r,eval=FALSE}
+test_object("train$install_3", incorrect_msg = "You do not need to add any code to define `install_3`. Please use the code provided.")
+
 msg <- "Have you correctly coded the table? Do not forget to provide the table that "
-test_output_contains("table(train$status_group)", 
-                     incorrect_msg = paste(msg, "shows the number of water pumps at each functional status."))
-test_output_contains("prop.table(table(train$status_group))", 
-                     incorrect_msg = paste(msg, "shows the proportion of water pumps at each functional status."))
-test_output_contains("table(train$quantity, train$status_group)", 
-                     incorrect_msg =  paste(msg, "shows the number of water pumps at each functional status vs the quantity variable."))
-test_output_contains("prop.table(table(train$quantity, train$status_group), margin = 1)", 
-                     incorrect_msg = paste(msg, "shows the proportion of water pumps at each functional status by the quantity variable?"))
+test_output_contains("table(train$install_3, train$status_group)", 
+                     incorrect_msg =  paste(msg, "shows the install_3 variable vs the number of water pumps at each functional status."))
+test_output_contains("prop.table(table(train$install_3, train$status_group), margin = 1)", 
+                     incorrect_msg = paste(msg, "shows the proportion of the install_3 variable vs the number of water pumps at each functional status.?"))
 test_error()
-success_msg("Well done! It looks like if the quantity variable is 'dry', it is likely that the pump is not functional. We will continue to explore some more variables next.")
+success_msg("Great work! It looks like there are a few installer groups that show a high proportion of non functional wells. In the next exercise you will see how the new variable performs and prepare your data for submission.")
 ```
 
---- type:NormalExercise xp:100 skills:1 key:fd4a37c0f5
-## Explore and Visualize
+--- type:NormalExercise xp:100 skills:1
+## Predict, Submit and Next Steps
 
-Another great way to explore your data is to create a few visualizations. This can help you better understand the structure and potential limitations of particular variables. 
+Now that you have created the new variable `install_3`, it is time to make a new prediction. Then you can observe the importance and statistics to see how it performs.
 
-When you check out the structure of the variables in `train` with `str()`; you see the majority are categorical factor variables. If there aren't too many categories, a bar chart can be a great way to visualize and digest your data. 
+Then, you can use the model to create predictions based on the test set. These results can be stored in a data frame called `submission` with a column for the well `id` and the predicted `status_group`. This data frame can then be written to a csv with `write.csv()` and submitted to DrivenData  [here](https://www.drivendata.org/competitions/7/submissions/). Ex: `write.csv(submission, file = filepath)`
 
-In the sample code to the right, you have been provided with a command that will produce a plot that shows a breakdown of the `quantity` variable broken up by `status_group`. Here are a few variables that you can view with a similar command:
+This has only been an introduction to the water pumps challenge; there are still many ways to improve and refine your predictions. Here are a few suggestions for some next steps:
 
-- `quality_group` - The quality of the water
-- `extraction_type_class` - The kind of extraction the water point uses
-- `payment` - What the water costs
-- `source_type` - The source of the water
-- `waterpoint_type` - The kind of water point
-
-You can see descriptions of all of the variables on the competition page [here](https://www.drivendata.org/competitions/7/page/25/). 
-
+- More feature selection: Look through the features in `train` and continue to add features that may have predictive power.
+- More feature engineering: Look to features that can be engineered to create more useful predictors. There are many location and character variables that could be refined to improve your predictions.
+- Improve the random forest: One way to improve the accuracy is to increase the number of trees produced by the random forest and experiment with increasing and decreasing the minimum node size.
+- Look to new machine learning techniques: There are many other machine learning techniques that could be utilzed to improve these models. KNN, SVM and logistic regression models and ensembles could give you the edge to climb the leaderboard.
 
 *** =instructions
-- Use the package `ggplot2` to create a bar chart for the variable `quantity` using the aesthetic fill to partition by `status_group`
-- Then make a similar plot for `quality_group` 
-- And again for `waterpoint_type`
+- Add the `install_3` variable to the random forest model
+- Look at the importance of the features in `model_forest`
+- Make predictions on the test set using `model_forest`
 
 *** =hint
-Use the same code that is provided for the `quantity` plot. Simply change the first argument in the command.
+Remember to fill in all of the blanks. Add `install_3` to the random forest formula, look at the importance of the model and use `predict()` on the test set and the model.
 
 *** =pre_exercise_code
 ```{r,eval=FALSE}
 load(url("http://s3.amazonaws.com/assets.datacamp.com/production/course_1032/datasets/driven_data_ex3.Rdata"))
 train <- merge(train_labels, train_values)
+
+train$install_3 <- substr(tolower(train$installer),1,3)
+train$install_3[train$install_3 %in% c(" ", "", "0", "_", "-")] <- "other"
+
+install_top_15 <- names(summary(as.factor(train$install_3)))[1:15]
+train$install_3[!(train$install_3 %in% install_top_15)] <- "other"
+train$install_3 <- as.factor(train$install_3)
+
+test$install_3 <- substr(tolower(test$installer),1,3)
+test$install_3[test$install_3 %in% c(" ", "", "0", "_", "-")] <- "other"
+test$install_3[!(test$install_3 %in% install_top_15)] <- "other"
+test$install_3 <- as.factor(test$install_3)
+
 ```
 
 *** =sample_code
 ```{r,eval=FALSE}
-# Load the ggplot package and examine train
-library(ggplot2)
-str(train)
+library(randomForest)
+set.seed(42)
+model_forest <- randomForest(as.factor(status_group) ~ longitude + latitude + extraction_type_group + quantity + waterpoint_type + construction_year + ___,
+                             data = train, importance = TRUE, ntree = 10, nodesize = 2)
+# Predict using the training values
+pred_forest_train <- predict(model_forest, train)
+importance(___)
+confusionMatrix(pred_forest_train, train$status_group)
 
-# Create bar plot for quantity
-qplot(quantity, data=train, geom="bar", fill=status_group) + 
-  theme(legend.position = "top")
+# Predict using the test values
+pred_forest_test <- predict(___, ___)
 
-# Create bar plot for quality_group
-qplot(___, data=train, geom="bar", fill=status_group) + 
-  theme(legend.position = "top")
-
-# Create bar plot for waterpoint_type
-qplot(___, data=train, geom="bar", fill=status_group) + 
-  theme(legend.position = "top") + 
-  theme(axis.text.x=element_text(angle = -20, hjust = 0))
+# Create submission data frame
+submission <- data.frame(test$id)
+submission$status_group <- pred_forest_test
+names(submission)[1] <- "id"
 
 ```
 
 *** =solution
 ```{r,eval=FALSE}
-# Load the ggplot package and examine train
-library(ggplot2)
-str(train)
+library(randomForest)
+set.seed(42)
+model_forest <- randomForest(as.factor(status_group) ~ longitude + latitude + extraction_type_group + quantity + waterpoint_type + construction_year + install_3,
+                             data = train, importance = TRUE, ntree = 10, nodesize = 2)
+# Predict using the training values
+pred_forest_train <- predict(model_forest, train)
+importance(model_forest)
+confusionMatrix(pred_forest_train, train$status_group)
 
-# Create bar plot for quantity
-qplot(quantity, data=train, geom="bar", fill=status_group) + 
-  theme(legend.position = "top")
+# Predict using the test values
+pred_forest_test <- predict(model_forest, test)
 
-# Create bar plot for quality_group
-qplot(quality_group, data=train, geom="bar", fill=status_group) + 
-  theme(legend.position = "top")
-
-# Create bar plot for waterpoint_type
-qplot(waterpoint_type, data=train, geom="bar", fill=status_group) + 
-  theme(legend.position = "top") +
-  theme(axis.text.x=element_text(angle = -20, hjust = 0))
-
-```
-
-*** =sct
-```{r,eval=FALSE}
-msg <- "There is no need to change the commands in the sample code."
-test_function_v2("qplot", "x", eval = FALSE, index = 1, 
-                 incorrect_msg = msg)
-test_function_v2("qplot", "x", eval = FALSE, index = 2, 
-                 incorrect_msg = paste(msg, " Simply change the `x` value in `qplot()` to `quality_group`"))
-test_function_v2("qplot", "x", eval = FALSE, index = 3, 
-                 incorrect_msg = paste(msg, " Simply change the `x` value in `qplot()` to `waterpoint_type`"))
-test_error()
-success_msg("Awesome! Now let's look at a few more visualizations.")
-```
---- type:MultipleChoiceExercise xp:50 skills:1,3  key:1a3f067902
-## Which Well Quantities are Funtional?
-
-Take another look at the first plot from the last exercise. Judging from the plot, which quantity level is most likely to be non-functional?
-
-You could also run `prop.table(table())` to see the proportion of wells that fall into each set of categories.
-
-*** =instructions
-- Dry
-- Enough
-- Sufficient
-- Seasonal
-  
-*** =hint
-Which column has the largest proportion of non-functional wells? Which one would make the most intuitive sense?
-
-*** =pre_exercise_code
-```{r,eval=FALSE}
-load(url("http://s3.amazonaws.com/assets.datacamp.com/production/course_1032/datasets/driven_data_ex3.Rdata"))
-train <- merge(train_labels, train_values)
-library(ggplot2)
-qplot(quantity, data=train, geom="bar", fill=status_group) + 
-  theme(legend.position = "top")
+# Create submission data frame
+submission <- data.frame(test$id)
+submission$status_group <- pred_forest_test
+names(submission)[1] <- "id"
 
 ```
 
 *** =sct
 ```{r,eval=FALSE}
-msg1 <- "Very good! Many times, the variables that have the most predictive power are also the ones that are most intuitive."
-msg2 <- "Not so good... Maybe have a look at the hint."
-msg3 <- "Incorrect. Maybe have a look at the hint."
-msg4 <- "Try again!"
-test_mc(correct =1, feedback_msgs = c(msg1, msg2, msg3, msg4))
-```
+test_function("randomForest", args = "x", 
+              incorrect_msg = "Make sure to add the new variable `install_3` to the random forest formula.")
 
---- type:NormalExercise xp:100 skills: 1,6 key:3dd6222252
-## Continuous Variable Viz
+test_function("randomForest", args = c("data", "importance", "ntree", "nodesize"),
+              incorrect_msg = "Remember to keep the `data` argument set to `train`, the `importance` argument to `TRUE`, the `ntree` argument to `10` and the `nodesize` argument to 2.")
 
-You just made some great plots that compared some categorical variables based on the well status. Now you can look a some ordinal or continuous variables using `ggplot2` and `geom_histogram`. 
+test_data_frame("model_forest", columns = "terms",
+                incorrect_msg = "`my_forest` is not correct. Make sure to only add `install_3` to the formula. There is no need to change the other inputs to `randomForest()`")
 
-It could be useful to observe the distribution of a few of these variables. Here is a list of a few variables in `train` that you could view in this way:
+test_function("predict", args = "object", eval = FALSE, index = 2,
+              incorrect_msg = "When calling `predict()`, you need to provide two arguments here: the random forest object and the test data set.") 
 
-- `amount_tsh` - Total static head (amount water available to water point)
-- `gps_height` - Altitude of the well
-- `population` - Population around the well
-- `construction_year` - Year the water point was constructed
-
-Feel free to use the script in the sample code to create histograms for any of the above variables to observe their distributions.
-
-If you want to learn more about the mechanics of `ggplot`, [this course](https://www.datacamp.com/courses/data-visualization-with-ggplot2-1) is a great place to start.
-
-*** =instructions 
-- Create a set of histogram of `construction_year` for wells that are 'functional', 'functional needs repair', and 'non functional'. 
-- Then create the same plots but only for wells that have a construction year that is not missing (which in this case is coded as `0`s). Simply fill in the two missing variables.
-
-*** =hint
-- Fill in the `x` variable in the aesthetic to complete the first plot
-- Fill in the `facet_grid` theme with the same variable as the first plot
-
-*** =pre_exercise_code
-```{r,eval=FALSE}
-load(url("http://s3.amazonaws.com/assets.datacamp.com/production/course_1032/datasets/driven_data_ex3.Rdata"))
-train <- merge(train_labels, train_values)
-```
-
-*** =sample_code
-```{r,eval=FALSE}
-library(ggplot2)
-
-# Create a histogram for `construction_year` grouped by `status_group`
-ggplot(train, aes(x = ___)) + 
-  geom_histogram(bins = 20) + 
-  facet_grid( ~ status_group)
-
-# Now subsetting when construction_year is larger than 0
-ggplot(subset(train, construction_year > 0), aes(x = ___)) +
-  geom_histogram(bins = 20) + 
-  facet_grid( ~ ___)
-
-```
-
-*** =solution
-```{r,eval=FALSE}
-library(ggplot2)
-
-# Create a histogram for `construction_year` grouped by `status_group`
-ggplot(train, aes(x = construction_year)) + 
-  geom_histogram(bins = 20) + 
-  facet_grid( ~ status_group)
-
-# Now subsetting when construction_year is larger than 0
-ggplot(subset(train, construction_year > 0), aes(x = construction_year)) +
-  geom_histogram(bins = 20) + 
-  facet_grid( ~ status_group)
-
-```
-
-*** =sct
-```{r,eval=FALSE}
-test_ggplot(1, aes_fail_msg = "Don't forget to fill in the `x` value in the aesthetic with `construction_year` for the first plot!")
-test_ggplot(2, aes_fail_msg = "Don't forget to fill in the `x` value in the aesthetic with `construction_year` for the first plot!", facet_fail_msg = "Look at the `facet_grid()` layer on the first plot and fill in the same variable for the second plot.")
-test_error()
-success_msg("Great work! As you can see, the first plot showed us that there were a lot of missing values coded as 0's. After subsetting them out, we could see that there may some differences between the distribution of functional wells and non-functional wells.")
-```
-
---- type:NormalExercise xp:100 skills: 1,6 key:9ff7f30b53
-## Mapping Well Locations
-
-Two other variables that would be worth checking out would be `longitude` and `latitude`. It would make sense that the location of the wells could be connected to the probability that they are functioning. We could look at a histogram of the two variables, but we could be missing some major features of the data. 
-
-First, you can start off creating a scatter plot for `longitude` and `latitude` to see where the wells are located throughout the country. Then see if there is any visible clustering around certain areas or landmarks by making the color of the points correspond to the values in `status_group`. 
-
-Next, you can use the googleVis package to create a map of Tanzania and overlay the locations of the wells. This will give a more visually appealing representation of the water point locations within the country. There are so many data points within `train` that the plot will take a long time to generate. To make things simpler, you can simply plot the first 1000 points in `train`.
-
-
-*** =instructions 
-- Create a scatter plot with `latitude` as the x-axis and `longitude` as the y-axis. You can subset out data points that are missing (and coded as 0's here). Also, add `status_group` as the color variable in the plot.
-- Use `googleVis` to plot the data on top of a map of Tanzania. To do this, code has been provided that creates a variable `longlat` that conforms to the inputs for `gvis GeoChart`. Plot the resulting map produced by `gvisGeoChart`
-
-*** =hint
-- Fill in the blanks for ggplot, the rest of the code is ready to produce the scatter plot!
-- Inspect the two plots produced
-
-
-*** =pre_exercise_code
-```{r,eval=FALSE}
-load(url("http://s3.amazonaws.com/assets.datacamp.com/production/course_1032/datasets/driven_data_ex3.Rdata"))
-train <- merge(train_labels, train_values)
-train$Size <- 1
-library(googleVis)
-```
-
-*** =sample_code
-```{r,eval=FALSE}
-library(ggplot2)
-library(googleVis)
-
-# Create scatter plot: latitude vs longitude with color as status_group
-ggplot(subset(train, latitude < 0 & longitude > 0), aes(x=___, y=___, color=___)) + 
-  geom_point(shape=1) + 
-  theme(legend.position = "top")
-
-# Create a column 'latlong' to input into gvisGeoChart
-train$latlong <- paste(round(train$latitude,2), round(train$longitude, 2), sep=":")
-
-# Use gvisGeoChart to create an interactive map with well locations
-wells_map <- gvisGeoChart(train[1:1000,], locationvar = "latlong", 
-                          colorvar = "status_group", sizevar = "Size", 
-                          options = list(region = "TZ"))
-
-# Plot wells_map
-wells_map
-
-```
-
-*** =solution
-```{r,eval=FALSE}
-library(ggplot2)
-library(googleVis)
-
-# Create scatter plot: latitude vs longitude with color as status_group
-ggplot(subset(train, latitude < 0 & longitude > 0), aes(x=latitude, y=longitude, color=status_group)) + 
-  geom_point(shape=1) + 
-  theme(legend.position = "top")
-
-# Create a column 'latlong' to input into gvisGeoChart
-train$latlong <- paste(round(train$latitude,2), round(train$longitude, 2), sep=":")
-
-# Use gvisGeoChart to create an interactive map with the first 1000 well locations
-wells_map <- gvisGeoChart(train[1:1000,], locationvar = "latlong", 
-                          colorvar = "status_group", sizevar = "Size", 
-                          options = list(region = "TZ"))
-# Plot wells_map
-wells_map
-
-```
-
-*** =sct
-```{r,eval=FALSE}
-test_ggplot(1, aes_fail_msg = "Don't forget to fill in the `x` value in the aesthetic with `latitude`, `y` with `longitude` and, `color` with `status_group` for the first plot!")
-
-test_function("gvisGeoChart", c("data", "locationvar", "colorvar", "sizevar"), eval = F, 
-              incorrect_msg = "You do not need to change the inputs for `gvisGeoChart`, simply use the code provided.")
-
-test_error()
-
-success_msg("Awesome job! Go to the next chapter to make some predictions!")
+success_msg("Awesome! Now you can submit the results of the random forest by downloading [this csv](http://s3.amazonaws.com/assets.datacamp.com/production/course_1032/datasets/Submission_Water_Pumps) and visiting the [submission page](https://www.drivendata.org/competitions/7/submissions/) for DriveData. You will see the model has an accuracy of 0.80 on the test set. Keep working and climb that leaderboard!")
 ```
