@@ -3,7 +3,7 @@ title_meta  : Chapter 2
 title       : Predict and Measure
 description : "In this chapter we will use a common machine learning technique to make and evaluate predictions."
 
---- type:NormalExercise xp:100 skills:1
+--- type:NormalExercise xp:100 skills:1 key:040bca4c1f
 ## First Prediction
 
 Let's start making a few predictions using a common machine learning technique called a Random Forest. Although it is a fairly complex technique, it is often a good place to start since it can handle a large number of features, it is fast, and can help quickly estimate which variables are important. 
@@ -97,7 +97,7 @@ success_msg("Nice! Let's look at the results a little more closely in the next f
             
 ```
 
---- type:MultipleChoiceExercise xp:50 skills:1,3 
+--- type:MultipleChoiceExercise xp:50 skills:1,3  key:a6c91cad10
 ## Evaluating the Random Forest
 
 You can still access your first random forest with `model_forest` and predictions as `pred_forest_train`. You can use the library `caret` to view the confusion matrix for the model. This will tell you the model's accuracy on the training set as well as other performance measures like sensitivity and specificity. You can see this by running the following code:
@@ -137,7 +137,7 @@ msg4 <- "Not quite... Maybe have a look at the hint."
 test_mc(correct =2, feedback_msgs = c(msg1, msg2, msg3, msg4))
 ```
 
---- type:MultipleChoiceExercise xp:50 skills:1,3 
+--- type:MultipleChoiceExercise xp:50 skills:1,3  key:859373b1f5
 ## Variable Importance
 
 Now it is time to take a look at how important the inputs were to your predictive model. Here, you can use:
@@ -178,7 +178,7 @@ msg4 <- "Awesome! It looks like the `quality_group` variable had the least predi
 test_mc(correct =4, feedback_msgs = c(msg1, msg2, msg3, msg4))
 ```
 
---- type:NormalExercise xp:100 skills:1
+--- type:NormalExercise xp:100 skills:1 key:f297df1536
 ## Adding Features
 
 There are a lot of features and many of them will not be useful inputs to commonly used machine learning techniques without some adjustments. That is why this data set is all about feature selection engineering. You have already made a pretty solid prediction only using a handful of variables. Now it is time to go through an example of some feature engineering that can help boost your prediction accuracy. 
@@ -270,7 +270,7 @@ test_error()
 success_msg("Great work! It looks like there are a few installer groups that show a high proportion of non functional wells. In the next exercise you will see how the new variable performs and prepare your data for submission.")
 ```
 
---- type:NormalExercise xp:100 skills:1
+--- type:NormalExercise xp:100 skills:1 key:ae5664aaef
 ## Predict, Submit and Next Steps
 
 Now that you have created the new variable `install_3`, it is time to make a new prediction. Then you can observe the importance and statistics to see how it performs.
