@@ -1,20 +1,20 @@
 ---
 title_meta  : Chapter 1
 title       : Intro to DrivenData Water Pumps
-description : "In this first chapter you will be introduced to DataCamp's interactive interface and the DrivenData Water Pumps data set. You will then evaluate the structure of the data by visualizing some the data's important features."
+description : "In this first chapter, you will be introduced to DataCamp's interactive interface and the DrivenData Water Pumps data set. You will then evaluate the structure of the data by visualizing some the data's important features."
 
---- type:NormalExercise xp:100 skills:1 key:a1ddff3dced9bc827f83d0a600e31649e732768b
+--- type:NormalExercise xp:100 skills:1
 ## How it works
 
 Welcome to our tutorial on the Driven Data's Water Pumps challenge. Here you will learn how to get started with the 
 competition using R. In case you're new to R, it's recommended that you first take our free [Introduction to R Tutorial](https://www.datacamp.com/courses/free-introduction-to-r). Furthermore, while not required, familiarity with machine learning techniques is a plus so you can get the maximum out of this tutorial.
 
-In the editor on the right you should type R code to solve the exercises. When you hit the 'Submit Answer' button, every line of code is interpreted and executed by R and you get a message whether or not your code was correct. The output of your R code is shown in the console in the lower right corner. R makes use of the `#` sign to add comments; these lines are not run as R code, so they will not influence your result.
+In the editor on the right, you should type R code to solve the exercises. When you hit the 'Submit Answer' button, every line of code is interpreted and executed by R and you get a message whether or not your code was correct. The output of your R code is shown in the console in the lower right corner. R makes use of the `#` sign to add comments; these lines are not run as R code, so they will not influence your result.
 
 You can also execute R commands straight in the console. This is a good way to experiment with R code, as your submission is not checked for correctness.
 
 *** =instructions
-- In the editor on the right there is already some sample code. Can you see which lines are actual R code and which are comments?
+- In the editor on the right, there is already some sample code. Can you see which lines are actual R code and which are comments?
 - Add a line of code that calculates the sum of 8 and 15, and hit the 'Submit Answer' button.
 
 *** =hint
@@ -47,19 +47,19 @@ Just add a line of R code that calculates the sum of 6 and 12, just like the exa
 *** =sct
 ```{r eval=FALSE}
 test_output_contains("12", incorrect_msg = "Do not remove the line of R code that calculates the product of 3 and 4. Instead, just add another line that calculates the sum of 8 and 15.")
-test_output_contains("23", incorrect_msg = "Make sure to add a line of R code, that calculates the sum of 8 and 15. Do not start the line with a `#`, otherwise your R code is not executed!")
+test_output_contains("23", incorrect_msg = "Make sure to add a line of R code, that calculates the sum of 8 and 15. Do not start the line with a `#`, otherwise, your R code will not be executed!")
 success_msg("Awesome! See how the console shows the result of the R code you submitted? Now that you're familiar with the interface, let's get down to R business!")
 ```
 
---- type:NormalExercise xp:100 skills:1,3  key:5ac7cf5cee32ae6b323cfb298ebfae05fc4e7bf4
+--- type:NormalExercise xp:100 skills:1,3 
 ## Data Mining the Water Table
 
-Using data from Taarifa and the Tanzanian Ministry of Water, can you predict which pumps are functional, which need some repairs, and which don't work at all? This is an intermediate-level practice competition. Predict one of these three classes based on a number of variables about what kind of pump is operating, when it was installed, and how it is managed. A smart understanding of which waterpoints will fail can improve maintenance operations and ensure that clean, potable water is available to communities across Tanzania.
+Using data from Taarifa and the Tanzanian Ministry of Water, can you predict which pumps are functional, which need some repairs, and which don't work at all? This is an intermediate-level practice competition. Predict one of these three classes based on a number of variables about what kind of pump is operating, when it was installed, and how it is managed. A smart understanding of which water points will fail can improve maintenance operations and ensure that clean, potable water is available to communities across Tanzania.
 
-Let's start with loading in the training and testing set into your R environment. You will use the training set to build your model, and the test set to validate it. The URLs for the 3 `csv` files are already available as variables in the sample code. You can load this data with the `read.csv()` function: simply pass the defined URL variables. We will inspect these new variables in the following exercises. Here is a quick explination of the variables that you are importing:
+Let's start with loading in the training and testing set into your R environment. You will use the training set to build your model, and the test set to validate it. The URLs for the 3 `csv` files are already available as variables in the sample code. You can load this data with the `read.csv()` function: simply pass the defined URL variables. We will inspect these new variables in the following exercises. Here is a quick explanation of the variables that you are importing:
 
 - `train_values` corresponds to the independent variables for the training set.
-- `train_labels` contains	the dependent variable (`status_group`) for each of the rows in `train_values`
+- `train_labels` contains    the dependent variable (`status_group`) for each of the rows in `train_values`
 - `test_values` is the independent variables that need predictions
 
 *** =instructions
@@ -144,10 +144,10 @@ test_correct({
 })
 
 test_error()
-success_msg("Well done! Now that your data is loaded in, you can start exploring it!.")
+success_msg("Well done! Now that your data is loaded in, you can start exploring it!")
 ```
 
---- type:MultipleChoiceExercise xp:50 skills:1,3  key:5ba0cacb49934cf4d62a10a7fb9287f6fef57a1e
+--- type:MultipleChoiceExercise xp:50 skills:1,3 
 ## Understanding your data
 
 Before starting with the actual analysis, it's important to understand the structure of your data. The variables loaded in the previous exercise, `train_labels`, `train_values`, and `test_values`, are data frames, R's way of representing a dataset. You can easily explore a data frame using the function `str()`. `str()` gives you information such as the data types in the data frame (e.g. `int` for integer), the number of observations, and the number of variables. It is a great way to get a feel for the contents of the data frame.
@@ -177,7 +177,7 @@ msg4 <- "Great job! In case you want to learn more on data frames, <a href='http
 test_mc(correct =4, feedback_msgs = c(msg1, msg2, msg3, msg4))
 ```
 
---- type:NormalExercise xp:100 skills:1 key:aa1b373e5055f70cb212be1eb593927ff1d48cfa
+--- type:NormalExercise xp:100 skills:1
 ## Water table()
 
 As you can see from the last exercise, these are large datasets with a bunch of variables. To simplify things, it is common to merge the independent values and the dependent labels into one data frame. This can be acheived using the `merge()` command on `train_values` and `train_labels`. Going forward, this will make it easier when modeling and manipulating the data frame. 
@@ -194,7 +194,7 @@ table(train$status_group)
 prop.table(table(train$status_group))
 ``` 
 
-If you run those commands in the console, you will see that 38.4% of water pumps in the `train` data frame are non-functional. It would also be helpful to see a two way table comparing a variable with `status_group` to see if it may have predictive value. For example:
+If you run those commands in the console, you will see that 38.4% of water pumps in the `train` data frame are non-functional. It would also be helpful to see a two-way table comparing a variable with `status_group` to see if it may have predictive value. For example:
 
 ```
 # absolute numbers
@@ -215,7 +215,7 @@ The second argument in `prop.table()` is called `margin` and can be set to eithe
 - Convert the numbers to row-wise proportions.
 
 *** =hint
-- The code for the first, second and third instruction is already given in the assignment!
+- The code for the first, second, and third instruction is already given in the assignment!
 - For the fourth instruction, wrap `prop.table()` around the `table()` call for the third instruction. Make sure to set the second argument of `prop.table()` correctly!
 
 *** =pre_exercise_code
@@ -276,7 +276,7 @@ test_error()
 success_msg("Well done! It looks like if the quantity variable is 'dry', it is likely that the pump is not functional. We will continue to explore some more variables next.")
 ```
 
---- type:NormalExercise xp:100 skills:1 key:aff8037b847c2c5c2e7f1db185813bf6c0769d3a
+--- type:NormalExercise xp:100 skills:1
 ## Explore and Visualize
 
 Another great way to explore your data is to create a few visualizations. This can help you better understand the structure and potential limitations of particular variables. 
@@ -286,10 +286,10 @@ When you check out the structure of the variables in `train` with `str()`; you s
 In the sample code to the right, you have been provided with a command that will produce a plot that shows a breakdown of the `quantity` variable broken up by `status_group`. Here are a few variables that you can view with a similar command:
 
 - `quality_group` - The quality of the water
-- `extraction_type_class` - The kind of extraction the waterpoint uses
+- `extraction_type_class` - The kind of extraction the water point uses
 - `payment` - What the water costs
 - `source_type` - The source of the water
-- `waterpoint_type` - The kind of waterpoint
+- `waterpoint_type` - The kind of water point
 
 You can see descriptions of all of the variables on the competition page [here](https://www.drivendata.org/competitions/7/page/25/). 
 
@@ -362,12 +362,12 @@ test_function_v2("qplot", "x", eval = FALSE, index = 3,
 test_error()
 success_msg("Awesome! Now let's look at a few more visualizations.")
 ```
---- type:MultipleChoiceExercise xp:50 skills:1,3  key:eb9c07ba3a
+--- type:MultipleChoiceExercise xp:50 skills:1,3 
 ## Which Well Quantities are Funtional?
 
 Take another look at the first plot from the last exercise. Judging from the plot, which quantity level is most likely to be non-functional?
 
-You could also run `prop.table(table())` to see the proportion of wells that fall in each set of categories.
+You could also run `prop.table(table())` to see the proportion of wells that fall into each set of categories.
 
 *** =instructions
 - Dry
@@ -397,17 +397,17 @@ msg4 <- "Try again!"
 test_mc(correct =1, feedback_msgs = c(msg1, msg2, msg3, msg4))
 ```
 
---- type:NormalExercise xp:100 skills: 1,6 key:54ff34bcce
+--- type:NormalExercise xp:100 skills: 1,6
 ## Continuous Variable Viz
 
 You just made some great plots that compared some categorical variables based on the well status. Now you can look a some ordinal or continuous variables using `ggplot2` and `geom_histogram`. 
 
 It could be useful to observe the distribution of a few of these variables. Here is a list of a few variables in `train` that you could view in this way:
 
-- `amount_tsh` - Total static head (amount water available to waterpoint)
+- `amount_tsh` - Total static head (amount water available to water point)
 - `gps_height` - Altitude of the well
 - `population` - Population around the well
-- `construction_year` - Year the waterpoint was constructed
+- `construction_year` - Year the water point was constructed
 
 Feel free to use the script in the sample code to create histograms for any of the above variables to observe their distributions.
 
@@ -464,26 +464,26 @@ ggplot(subset(train, construction_year > 0), aes(x = construction_year)) +
 test_ggplot(1, aes_fail_msg = "Don't forget to fill in the `x` value in the aesthetic with `construction_year` for the first plot!")
 test_ggplot(2, aes_fail_msg = "Don't forget to fill in the `x` value in the aesthetic with `construction_year` for the first plot!", facet_fail_msg = "Look at the `facet_grid()` layer on the first plot and fill in the same variable for the second plot.")
 test_error()
-success_msg("Great work! As you can see, the first plot showed us that there were a lot of missing values coded as 0's. After subsetting them out, we could see that there may some diffferences between the distribution of functional wells and non functional wells.")
+success_msg("Great work! As you can see, the first plot showed us that there were a lot of missing values coded as 0's. After subsetting them out, we could see that there may some differences between the distribution of functional wells and non-functional wells.")
 ```
 
---- type:NormalExercise xp:100 skills: 1,6 key:9424a7adfe
+--- type:NormalExercise xp:100 skills: 1,6
 ## Mapping Well Locations
 
-Two other variables that would be worth checking out would be `longitude` and `latitude`. It would make sense that where the wells are located could be connected to probability that they are functioning. We could look at a histogram of the two variables, but we could be missing some major features of the data. 
+Two other variables that would be worth checking out would be `longitude` and `latitude`. It would make sense that the location of the wells could be connected to the probability that they are functioning. We could look at a histogram of the two variables, but we could be missing some major features of the data. 
 
 First, you can start off creating a scatter plot for `longitude` and `latitude` to see where the wells are located throughout the country. Then see if there is any visible clustering around certain areas or landmarks by making the color of the points correspond to the values in `status_group`. 
 
-Next, you can use the googleVis package to create a map of Tanzania and overlay the locations of the wells. This will give a more visually appealling representation of the waterpoint locations within the country. There are so many datapoints within `train` that the plot will take a long time to generate. To make things simpler, you can simply plot the first 1000 points in `train`.
+Next, you can use the googleVis package to create a map of Tanzania and overlay the locations of the wells. This will give a more visually appealing representation of the water point locations within the country. There are so many data points within `train` that the plot will take a long time to generate. To make things simpler, you can simply plot the first 1000 points in `train`.
 
 
 *** =instructions 
-- Create a scatter plot with `latitude` as the x-axis and `longitude` as the y-axis. You can subset out datapoints that are missing (and coded as 0's here). Also add `status_group` as the color variable in the plot.
+- Create a scatter plot with `latitude` as the x-axis and `longitude` as the y-axis. You can subset out data points that are missing (and coded as 0's here). Also, add `status_group` as the color variable in the plot.
 - Use `googleVis` to plot the data on top of a map of Tanzania. To do this, code has been provided that creates a variable `longlat` that conforms to the inputs for `gvis GeoChart`. Plot the resulting map produced by `gvisGeoChart`
 
 *** =hint
 - Fill in the blanks for ggplot, the rest of the code is ready to produce the scatter plot!
-- Inpspect the two plots produced
+- Inspect the two plots produced
 
 
 *** =pre_exercise_code
