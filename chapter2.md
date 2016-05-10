@@ -3,7 +3,7 @@ title_meta  : Chapter 2
 title       : Predict and Measure
 description : "In this chapter we will use a common machine learning technique to make and evaluate predictions."
 
---- type:NormalExercise xp:100 skills:1 key:040bca4c1f
+--- type:NormalExercise xp:100 skills:1
 ## First Prediction
 
 Let's start making a few predictions using a common machine learning technique called a Random Forest. Although it is a fairly complex technique, it is often a good place to start since it can handle a large number of features, it is fast, and can help quickly estimate which variables are important. 
@@ -27,7 +27,7 @@ As you can see, these are variables that you have examined in the previous exerc
 
 
 *** =instructions
-- Perform a Random Forest and name the model `model_forest`. Use the variables provided in the sample code.
+- Perform a Random Forest and name the model `model_forest`. Use the variables provided in the sample code. Train the model on the data set `train`.
 - Set the number of trees to grow to 10, make sure you can inspect variable importance (set to TRUE), and set node size to 2.
 - Make a prediction (`pred_forest_train`) on the test set using the `predict()` function with inputs of `model_forest` and `train`
 - Inspect the first few rows of `pred_forest_train` using `head()`
@@ -93,11 +93,13 @@ test_function("predict", args = "object", eval = FALSE,
 test_object("pred_forest_train", 
             incorrect_msg = paste("Looks like `pred_forest_train` is calculated incorrectly. Use `model_forest` and `train` as inputs in `predict()`."))
 
+test_output_contains("head(pred_forest_train)", incorrect_msg = "Don't forget to observe the first few rows of your prediction using `head()`.")
+
 success_msg("Nice! Let's look at the results a little more closely in the next few exercises.")
             
 ```
 
---- type:MultipleChoiceExercise xp:50 skills:1,3  key:a6c91cad10
+--- type:MultipleChoiceExercise xp:50 skills:1,3 
 ## Evaluating the Random Forest
 
 You can still access your first random forest with `model_forest` and predictions as `pred_forest_train`. You can use the library `caret` to view the confusion matrix for the model. This will tell you the model's accuracy on the training set as well as other performance measures like sensitivity and specificity. You can see this by running the following code:
@@ -137,15 +139,18 @@ msg4 <- "Not quite... Maybe have a look at the hint."
 test_mc(correct =2, feedback_msgs = c(msg1, msg2, msg3, msg4))
 ```
 
---- type:MultipleChoiceExercise xp:50 skills:1,3  key:859373b1f5
+--- type:MultipleChoiceExercise xp:50 skills:1,3 
 ## Variable Importance
 
 Now it is time to take a look at how important the inputs were to your predictive model. Here, you can use:
+
 ```
 importance(model_forest)
+
 varImpPlot(model_forest)
 ```
-To assess the predictive utility of the given variables in the model. According to the output, what variable is LEAST important based on the mean decrease in accuracy?
+
+to assess the predictive utility of the given variables in the model. According to the output, what variable is LEAST important based on the mean decrease in accuracy?
 
 Note: The more the accuracy of the random forest decreases due to the exclusion (or permutation) of a single variable, the more important that variable is deemed. Variables with a large mean decrease in accuracy are more important for classification of the data. 
 
@@ -178,12 +183,12 @@ msg4 <- "Awesome! It looks like the `quality_group` variable had the least predi
 test_mc(correct =4, feedback_msgs = c(msg1, msg2, msg3, msg4))
 ```
 
---- type:NormalExercise xp:100 skills:1 key:f297df1536
+--- type:NormalExercise xp:100 skills:1
 ## Adding Features
 
-There are a lot of features and many of them will not be useful inputs to commonly used machine learning techniques without some adjustments. That is why this data set is all about feature selection engineering. You have already made a pretty solid prediction only using a handful of variables. Now it is time to go through an example of some feature engineering that can help boost your prediction accuracy. 
+There are a lot of features in this data set, and many of them will not be useful inputs to commonly for machine learning techniques without some adjustments. That is why this data set is all about feature selection and feature engineering. You have already made a pretty solid prediction only using a handful of variables. Now it is time to go through an example of some feature engineering that can help boost your prediction accuracy. 
 
-We can examine the variable `installer` by using `summary(train$installer)`. We can see that there are a lot of terms that are likely the same installer, but have differenct names. For example, there are many instances that refer to 'Government': 'Gover', GOVER', 'Government', 'Govt' etc. All of these will be considered different factors unless you find a way to aggregate them. One quick but simplistic way to do this would be to take the first 3 letters of each factor and make them lower case. Then, we can aggregate the terms that are most frequent and only use those as predictors, putting all other variables into an 'other' category.
+We can examine the variable `installer` by using `summary(train$installer)`. We can see that there are a lot of terms that are likely the same installer, but have differenct names. For example, there are many instances that refer to 'Government': 'Gover', 'GOVER', 'Government', 'Govt' etc. All of these will be considered different factors unless you find a way to aggregate them. One quick, and simplistic, way to do this would be to take the first 3 letters of each factor and make them lower case. Then, we can aggregate the terms that are most frequent and only use those as predictors, putting all other variables into an 'other' category.
 
 When you create new features like this, you have to remember to make the same one on the `test` set. That way, you can make a prediction on the `test` set using the same model.
 
@@ -192,7 +197,7 @@ When you create new features like this, you have to remember to make the same on
 - Check out the code that defines the new variable `install_3`
 - Do a two-way comparison on the number of functioning water pumps with the `install_3` variable, in absolute numbers. Again, use the `train` data frame.
 - Convert the numbers to row-wise proportions.
-- Create `install_3` on the `test` set.
+- Inspect the code that creates `install_3` on the `test` set for later testing.
 
 *** =hint
 - Use `table(train$install_3, train$status_group)` and `prop_table()`.
@@ -200,6 +205,7 @@ When you create new features like this, you have to remember to make the same on
 *** =pre_exercise_code
 ```{r,eval=FALSE}
 load(url("http://s3.amazonaws.com/assets.datacamp.com/production/course_1032/datasets/driven_data_ex3.Rdata"))
+train <- merge(train_labels, train_values)
 ```
 
 *** =sample_code
@@ -270,7 +276,7 @@ test_error()
 success_msg("Great work! It looks like there are a few installer groups that show a high proportion of non functional wells. In the next exercise you will see how the new variable performs and prepare your data for submission.")
 ```
 
---- type:NormalExercise xp:100 skills:1 key:ae5664aaef
+--- type:NormalExercise xp:100 skills:1
 ## Predict, Submit and Next Steps
 
 Now that you have created the new variable `install_3`, it is time to make a new prediction. Then you can observe the importance and statistics to see how it performs.
@@ -296,6 +302,19 @@ Remember to fill in all of the blanks. Add `install_3` to the random forest form
 ```{r,eval=FALSE}
 load(url("http://s3.amazonaws.com/assets.datacamp.com/production/course_1032/datasets/driven_data_ex3.Rdata"))
 train <- merge(train_labels, train_values)
+
+train$install_3 <- substr(tolower(train$installer),1,3)
+train$install_3[train$install_3 %in% c(" ", "", "0", "_", "-")] <- "other"
+
+install_top_15 <- names(summary(as.factor(train$install_3)))[1:15]
+train$install_3[!(train$install_3 %in% install_top_15)] <- "other"
+train$install_3 <- as.factor(train$install_3)
+
+test$install_3 <- substr(tolower(test$installer),1,3)
+test$install_3[test$install_3 %in% c(" ", "", "0", "_", "-")] <- "other"
+test$install_3[!(test$install_3 %in% install_top_15)] <- "other"
+test$install_3 <- as.factor(test$install_3)
+
 ```
 
 *** =sample_code
