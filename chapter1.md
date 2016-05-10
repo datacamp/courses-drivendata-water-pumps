@@ -3,7 +3,7 @@ title_meta  : Chapter 1
 title       : Intro to DrivenData Water Pumps
 description : "In this first chapter, you will be introduced to DataCamp's interactive interface and the DrivenData Water Pumps data set. You will then evaluate the structure of the data by visualizing some the data's important features."
 
---- type:NormalExercise xp:100 skills:1
+--- type:NormalExercise xp:100 skills:1 key:b4f3362966
 ## How it works
 
 Welcome to our tutorial on the Driven Data's Water Pumps challenge. Here you will learn how to get started with the 
@@ -51,7 +51,7 @@ test_output_contains("23", incorrect_msg = "Make sure to add a line of R code, t
 success_msg("Awesome! See how the console shows the result of the R code you submitted? Now that you're familiar with the interface, let's get down to R business!")
 ```
 
---- type:NormalExercise xp:100 skills:1,3 
+--- type:NormalExercise xp:100 skills:1,3  key:593aa399e2
 ## Data Mining the Water Table
 
 Using data from Taarifa and the Tanzanian Ministry of Water, can you predict which pumps are functional, which need some repairs, and which don't work at all? This is an intermediate-level practice competition by [DrivenData](https://www.drivendata.org/). Predict one of these three classes based on a number of variables about what kind of pump is operating, when it was installed, and how it is managed. A smart understanding of which water points will fail can improve maintenance operations and ensure that clean, potable water is available to communities across Tanzania.
@@ -148,7 +148,7 @@ test_error()
 success_msg("Well done! Now that your data is loaded in, you can start exploring it!")
 ```
 
---- type:MultipleChoiceExercise xp:50 skills:1,3 
+--- type:MultipleChoiceExercise xp:50 skills:1,3  key:148c328361
 ## Understanding your data
 
 Before starting with the actual analysis, it's important to understand the structure of your data. The variables loaded in the previous exercise, `train_labels`, `train_values`, and `test_values`, are data frames, R's way of representing a dataset. You can easily explore a data frame using the function `str()`. `str()` gives you information such as the data types in the data frame (e.g. `int` for integer), the number of observations, and the number of variables. It is a great way to get a feel for the contents of the data frame.
@@ -178,7 +178,7 @@ msg4 <- "Great job! In case you want to learn more on data frames, <a href='http
 test_mc(correct =4, feedback_msgs = c(msg1, msg2, msg3, msg4))
 ```
 
---- type:NormalExercise xp:100 skills:1
+--- type:NormalExercise xp:100 skills:1 key:0f33ec603e
 ## Water table()
 
 As you can see from the last exercise, these are large datasets with a bunch of variables. To simplify things, it is common to merge the independent values and the dependent labels into one data frame. This can be acheived using the `merge()` command on `train_values` and `train_labels`. Going forward, this will make it easier when modeling and manipulating the data frame. 
@@ -277,7 +277,7 @@ test_error()
 success_msg("Well done! It looks like if the quantity variable is 'dry', it is likely that the pump is not functional. We will continue to explore some more variables next.")
 ```
 
---- type:NormalExercise xp:100 skills:1
+--- type:NormalExercise xp:100 skills:1 key:f21d7e0656
 ## Explore and Visualize
 
 Another great way to explore your data is to create a few visualizations. This can help you better understand the structure and potential limitations of particular variables. 
@@ -363,7 +363,7 @@ test_function_v2("qplot", "x", eval = FALSE, index = 3,
 test_error()
 success_msg("Awesome! Now let's look at a few more visualizations.")
 ```
---- type:MultipleChoiceExercise xp:50 skills:1,3 
+--- type:MultipleChoiceExercise xp:50 skills:1,3  key:41faea81d0
 ## Which Well Quantities are Funtional?
 
 Take another look at the first plot from the last exercise. Judging from the plot, which quantity level is most likely to be non-functional?
@@ -398,7 +398,7 @@ msg4 <- "Try again!"
 test_mc(correct =1, feedback_msgs = c(msg1, msg2, msg3, msg4))
 ```
 
---- type:NormalExercise xp:100 skills: 1,6
+--- type:NormalExercise xp:100 skills: 1,6 key:a7b384d91f
 ## Continuous Variable Viz
 
 You just made some great plots that compared some categorical variables based on the well status. Now you can look a some ordinal or continuous variables using `ggplot2` and `geom_histogram`. 
@@ -468,7 +468,7 @@ test_error()
 success_msg("Great work! As you can see, the first plot showed us that there were a lot of missing values coded as 0's. After subsetting them out, we could see that there may some differences between the distribution of functional wells and non-functional wells.")
 ```
 
---- type:NormalExercise xp:100 skills: 1,6
+--- type:NormalExercise xp:100 skills: 1,6 key:308c8f1356
 ## Mapping Well Locations
 
 Two other variables that would be worth checking out would be `longitude` and `latitude`. It would make sense that the location of the wells could be connected to the probability that they are functioning. We could look at a histogram of the two variables, but we could be missing some major features of the data. 
