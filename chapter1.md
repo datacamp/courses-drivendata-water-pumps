@@ -37,7 +37,7 @@ Just add a line of R code that calculates the sum of 8 and 15, just like the exa
 
 *** =solution
 ```{r eval=FALSE}
-# Calculate 3 + 4
+# Calculate 3 * 4
 3 * 4
 
 # Calculate 8 + 15
@@ -46,8 +46,20 @@ Just add a line of R code that calculates the sum of 8 and 15, just like the exa
 
 *** =sct
 ```{r eval=FALSE}
+# Are you ok with the users/students typing any possible way to code 12 and 23?
+# i.e. 2 * 6 or even using addition 11 + 1 
+# currently just putting 12 or 23 would suffice as an acceptable solution 
+# I added the test_student_typed
+
 test_output_contains("12", incorrect_msg = "Do not remove the line of R code that calculates the product of 3 and 4. Instead, just add another line that calculates the sum of 8 and 15.")
+# first instruction
+test_student_typed("3 * 4", not_typed_msg = "Do not remove the line of R code that calculates the product of 3 and 4. Instead, just add another line that calculates the sum of 8 and 15.")
+
 test_output_contains("23", incorrect_msg = "Make sure to add a line of R code, that calculates the sum of 8 and 15. Do not start the line with a `#`, otherwise, your R code will not be executed!")
+
+# second instruction
+test_student_typed("8 + 15", not_typed_msg = "Make sure to add a line of R code, that calculates the sum of 8 and 15. Do not start the line with a `#`, otherwise, your R code will not be executed!")
+
 success_msg("Awesome! See how the console shows the result of the R code you submitted? Now that you're familiar with the interface, let's get down to R business!")
 ```
 
