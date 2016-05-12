@@ -71,7 +71,7 @@ Using data from Taarifa and the Tanzanian Ministry of Water, can you predict whi
 Let's start with loading in the training and testing set into your R environment. You will use the training set to build your model, and the test set to validate it. The URLs for the 3 `csv` files are already available as variables in the sample code. You can load this data with the `read.csv()` function: simply pass the defined URL variables. We will inspect these new variables in the following exercises. Here is a quick explanation of the 3 data frames that you will import:
 
 - `train_values` corresponds to the independent variables for the training set.
-- `train_labels` contains    the dependent variable (`status_group`) for each of the rows in `train_values`
+- `train_labels` contains the dependent variable (`status_group`) for each of the rows in `train_values`
 - `test_values` is the independent variables that need predictions
 
 *** =instructions
@@ -134,6 +134,26 @@ test_values <- read.csv(test_values_url)
 
 *** =sct
 ```{r,eval=FALSE}
+# So if you were to just hit submit without changing any of the code you get an error "Parsing error in script.R:19:0: 
+#   unexpected end of input
+# 17: test_values <- 
+# 18: 
+#    ^"
+#
+# The default hink or message is that there is a syntax error
+# Is there a way to write a sct for a syntax error that provides a more helpful error message
+#
+# If the sample code did not have the <- after the train_lables and test_values the hint/ error message is "The system wants # to check the second call of read.csv(), but it hasn't found it; have another look at your code."
+#
+# You can see in the console that the two objects "Error: object 'train_labels' not found" cannot be found
+# 
+# That was my first thought to get a more meaningful error message
+# 
+# After running through exercise 5 it looks like there was an error message that read "Have a look at the highlighted code 
+# in the editor. Replace it with valid R code!
+#
+# Perhaps anothe solution could be to add ___ after the 'test_values <-', 'test_values <-___' which could result in the same # defalut error message
+
 
 msg <- "Do not change the code that specifies the URLs of the 3 csvs. You can reset the sample code to its original state by pressing the reset button next to 'Submit Answer'."
 lapply(c("train_values_url", "train_labels_url", "test_values_url"), test_object, undefined_msg = msg, incorrect_msg = msg)
