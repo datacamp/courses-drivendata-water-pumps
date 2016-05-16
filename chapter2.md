@@ -302,7 +302,7 @@ Remember to fill in all of the blanks. Add `install_3` to the random forest form
 ```{r,eval=FALSE}
 library(caret)
 library(randomForest)
-load(url("https://s3.amazonaws.com/assets.datacamp.com/production/course_1032/datasets/driven_data_ch2ex5.Rdata"))
+load(url("http://s3.amazonaws.com/assets.datacamp.com/production/course_1032/datasets/driven_data_ch2ex5.Rdata"))
 
 ```
 
