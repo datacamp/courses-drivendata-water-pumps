@@ -302,26 +302,13 @@ Remember to fill in all of the blanks. Add `install_3` to the random forest form
 ```{r,eval=FALSE}
 library(caret)
 library(randomForest)
-load(url("http://s3.amazonaws.com/assets.datacamp.com/production/course_1032/datasets/driven_data_ex3.Rdata"))
-train <- merge(train_labels, train_values)
-
-train$install_3 <- substr(tolower(train$installer),1,3)
-train$install_3[train$install_3 %in% c(" ", "", "0", "_", "-")] <- "other"
-
-install_top_15 <- names(summary(as.factor(train$install_3)))[1:15]
-train$install_3[!(train$install_3 %in% install_top_15)] <- "other"
-train$install_3 <- as.factor(train$install_3)
-
-test$install_3 <- substr(tolower(test$installer),1,3)
-test$install_3[test$install_3 %in% c(" ", "", "0", "_", "-")] <- "other"
-test$install_3[!(test$install_3 %in% install_top_15)] <- "other"
-test$install_3 <- as.factor(test$install_3)
+load(url("https://s3.amazonaws.com/assets.datacamp.com/production/course_1032/datasets/driven_data_ch2ex5.Rdata"))
 
 ```
 
 *** =sample_code
 ```{r,eval=FALSE}
-library(randomForest)
+# randomForest and caret packages are pre-loaded
 set.seed(42)
 model_forest <- randomForest(as.factor(status_group) ~ longitude + latitude + extraction_type_group + quantity + waterpoint_type + construction_year + ___,
                              data = train, importance = TRUE, ntree = 10, nodesize = 2)
@@ -342,7 +329,7 @@ names(submission)[1] <- "id"
 
 *** =solution
 ```{r,eval=FALSE}
-library(randomForest)
+# randomForest and caret packages are pre-loaded
 set.seed(42)
 model_forest <- randomForest(as.factor(status_group) ~ longitude + latitude + extraction_type_group + quantity + waterpoint_type + construction_year + install_3,
                              data = train, importance = TRUE, ntree = 10, nodesize = 2)
