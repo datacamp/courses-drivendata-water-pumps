@@ -121,13 +121,8 @@ Look at the 'Statistics by Class' area of the of the output. Then find the colum
 
 *** =pre_exercise_code
 ```{r,eval=FALSE}
-load(url("http://s3.amazonaws.com/assets.datacamp.com/production/course_1032/datasets/driven_data_ex3.Rdata"))
-train <- merge(train_labels, train_values)
+load(url("http://s3.amazonaws.com/assets.datacamp.com/production/course_1032/datasets/driven_data_ch2ex3.Rdata"))
 library(randomForest)
-set.seed(42)
-model_forest <- randomForest(as.factor(status_group) ~ longitude + latitude + extraction_type_group + quality_group + quantity + waterpoint_type + construction_year,
-                             data = train, importance = TRUE, ntree = 10, nodesize = 2)
-pred_forest_train <- predict(model_forest, train)
 ```
 
 *** =sct
