@@ -6,7 +6,7 @@ description : "In this chapter we will use a common machine learning technique t
 --- type:NormalExercise xp:100 skills:1 key:040bca4c1f
 ## First Prediction
 
-Let's start making a few predictions using a common machine learning technique called a Random Forest. Although it is a fairly complex technique, it is often a good place to start since it can handle a large number of features, it is fast, and can help quickly estimate which variables are important. 
+Let's start making a few predictions using a common machine learning technique called a Random Forest. Although it is a fairly complex technique, it is often a good place to start since it can handle a large number of features. It is fast, and can help quickly estimate which variables are important. 
 
 To create a Random Forest analysis in R, you make use of the `randomForest()` function in the aptly named [`randomForest`](http://www.rdocumentation.org/packages/randomForest) package. 
 
@@ -28,7 +28,7 @@ As you can see, these are variables that you have examined in the previous exerc
 
 *** =instructions
 - Perform a Random Forest and name the model `model_forest`. Use the variables provided in the sample code. Train the model on the data set `train`.
-- Set the number of trees to grow to 10, make sure you can inspect variable importance (set to TRUE), and set node size to 2.
+- Set the number of trees (`ntree`) to grow to 10, make sure you can inspect variable `importance` (set to TRUE), and set `nodesize` to 2.
 - Make a prediction (`pred_forest_train`) on the test set using the `predict()` function with inputs of `model_forest` and `train`
 - Inspect the first few rows of `pred_forest_train` using `head()`
 
@@ -301,7 +301,9 @@ load(url("http://s3.amazonaws.com/assets.datacamp.com/production/course_1032/dat
 # randomForest and caret packages are pre-loaded
 set.seed(42)
 model_forest <- randomForest(as.factor(status_group) ~ longitude + latitude + extraction_type_group + quantity + waterpoint_type + construction_year + ___,
-                             data = train, importance = TRUE, ntree = 10, nodesize = 2)
+                             data = train, importance = TRUE,
+                             ntree = 10, nodesize = 2)
+                             
 # Predict using the training values
 pred_forest_train <- predict(model_forest, train)
 importance(___)
@@ -322,7 +324,9 @@ names(submission)[1] <- "id"
 # randomForest and caret packages are pre-loaded
 set.seed(42)
 model_forest <- randomForest(as.factor(status_group) ~ longitude + latitude + extraction_type_group + quantity + waterpoint_type + construction_year + install_3,
-                             data = train, importance = TRUE, ntree = 10, nodesize = 2)
+                             data = train, importance = TRUE,
+                             ntree = 10, nodesize = 2)
+                             
 # Predict using the training values
 pred_forest_train <- predict(model_forest, train)
 importance(model_forest)

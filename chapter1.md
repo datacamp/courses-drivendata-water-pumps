@@ -407,7 +407,7 @@ test_mc(correct =1, feedback_msgs = c(msg1, msg2, msg3, msg4))
 --- type:NormalExercise xp:100 skills: 1,6 key:a7b384d91f
 ## Continuous Variable Viz
 
-You just made some great plots that compared some categorical variables based on the well status. Now you can look a some ordinal or continuous variables using `ggplot2` and `geom_histogram`. 
+You just made some great plots that compared some categorical variables based on the well status. Now you can look at some ordinal or continuous variables using `ggplot2` and `geom_histogram`. 
 
 It could be useful to observe the distribution of a few of these variables. Here is a list of a few variables in `train` that you could view in this way:
 
@@ -507,12 +507,13 @@ library(ggplot2)
 library(googleVis)
 
 # Create scatter plot: latitude vs longitude with color as status_group
-ggplot(subset(train, latitude < 0 & longitude > 0), aes(x=___, y=___, color=___)) + 
-  geom_point(shape=1) + 
-  theme(legend.position = "top")
+ggplot(subset(train, latitude < 0 & longitude > 0),
+    aes(x = ___, y = ___, color = ___)) + 
+    geom_point(shape = 1) + 
+    theme(legend.position = "top")
 
 # Create a column 'latlong' to input into gvisGeoChart
-train$latlong <- paste(round(train$latitude,2), round(train$longitude, 2), sep=":")
+train$latlong <- paste(round(train$latitude,2), round(train$longitude, 2), sep = ":")
 
 # Use gvisGeoChart to create an interactive map with well locations
 wells_map <- gvisGeoChart(train[1:1000,], locationvar = "latlong", 
