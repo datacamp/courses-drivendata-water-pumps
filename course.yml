@@ -1,5 +1,5 @@
 title            : DrivenData Water Pumps Challenge
-author_field     : The DataCamp Team
+author_field     : Weston Stearns
 description      : Interested in starting to put your data science skills to work in order to solve some of the world's biggest social challenges? <a href= "https://www.drivendata.org/" target="_blank">DrivenData</a> provides that opportunity by hosting challenges where data scientists compete to come up with the best statistical model for difficult predictive problems that make a difference. In this practice challenge, you will be predicting which water pumps throughout Tanzania are functional, which need some repairs, and which do not work at all based on a number of variables. A smart understanding of which waterpoints will fail can improve maintenance operations and ensure that clean, potable water is available to communities across Tanzania.
 author_bio       : Weston is a member of the DataCamp team and all-around stats guy. He is passionate about making education efficient and accessible with the help of technology. He holds a degree in statistics from Harvard where he also served as a teaching fellow.
 university       : DataCamp
