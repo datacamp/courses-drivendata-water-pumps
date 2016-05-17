@@ -64,7 +64,7 @@ Using data from Taarifa and the Tanzanian Ministry of Water, can you predict whi
 
 Let's start with loading in the training and testing set into your R environment. You will use the training set to build your model, and the test set to validate it. The URLs for the 3 `csv` files are already available as variables in the sample code. You can load this data with the `read.csv()` function: simply pass the defined URL variables. We will inspect these new variables in the following exercises. Here is a quick explanation of the 3 data frames that you will import:
 
-- `train_values` corresponds to the independent variables for the training set.
+- `train_values` corresponds to the independent variables for the training set
 - `train_labels` contains the dependent variable (`status_group`) for each of the rows in `train_values`
 - `test_values` is the independent variables that need predictions
 
@@ -163,12 +163,12 @@ The 3 data frames are already loaded into your workspace. Apply `str()` to each 
 
 *** =instructions
 - `train_labels` has 14850 observations and 40 variables.
-- `train_labels` has 59400 observations and 2 variables.
+- `test_values` has 59400 observations and 2 variables.
 - `train_values` has 14850 observations and 2 variables.
 - `train_values` has 59400 observations and 40 variables.
   
 *** =hint
-To see the structure of the `test_values` variable you can make use of `str(test_values)`.
+To see the structure of the `test_values`variable, for example, you can make use of `str(test_values)`.
 
 *** =pre_exercise_code
 ```{r,eval=FALSE}
@@ -201,7 +201,7 @@ table(train$status_group)
 prop.table(table(train$status_group))
 ``` 
 
-If you run those commands in the console, you will see that 38.4% of water pumps in the `train` data frame are non-functional. It would also be helpful to see a two-way table comparing a variable with `status_group` to see if it may have predictive value. For example:
+If you run those commands in the console, you will see that 38.4% of water pumps in the `train` data frame are non-functional. It would also be helpful to see a two-way table comparing `status_group` with another variable to see if it may have predictive value. For example:
 
 ```
 # absolute numbers
@@ -216,7 +216,7 @@ The second argument in `prop.table()` is called `margin` and can be set to eithe
 
 
 *** =instructions
-- Calculate the pump status in absolute numbers using `table()` on `train`.
+- Calculate the pump status in absolute numbers using `table()` on `train$status_group`.
 - Calculate the pump status as proportions by wrapping `prop.table()` around the previous `table()` call.
 - Do a two-way comparison on the number of functioning water pumps with the `quantity` variable, in absolute numbers. Again, use the `train` data frame.
 - Convert the numbers to row-wise proportions.
@@ -302,9 +302,9 @@ You can see descriptions of all of the variables on the competition page [here](
 
 
 *** =instructions
-- Use the package `ggplot2` to create a bar chart for the variable `quantity` using the aesthetic `fill` to partition by `status_group`
-- Then make a similar plot for `quality_group` 
-- And again for `waterpoint_type`
+- The code given uses the package `ggplot2` to create a bar chart for the variable `quantity` using the aesthetic `fill` to partition by `status_group`
+- Using similar syntax, make a similar plot for `quality_group` 
+- Then again for `waterpoint_type`
 
 *** =hint
 Use the same code that is provided for the `quantity` plot. Simply change the first argument in the command.
@@ -372,7 +372,7 @@ success_msg("Awesome! Now let's look at a few more visualizations.")
 --- type:MultipleChoiceExercise xp:50 skills:1,3  key:41faea81d0
 ## Which Well Quantities are Funtional?
 
-Take another look at the first plot from the last exercise. Judging from the plot, which quantity level is most likely to be non-functional?
+We have reproduced the first plot from the previous exercise so you can take another look. Judging from the plot, which quantity level is most likely to be non-functional?
 
 You could also run `prop.table(table())` to see the proportion of wells that fall into each set of categories.
 
@@ -469,7 +469,7 @@ ggplot(subset(train, construction_year > 0), aes(x = construction_year)) +
 *** =sct
 ```{r,eval=FALSE}
 test_ggplot(1, aes_fail_msg = "Don't forget to fill in the `x` value in the aesthetic with `construction_year` for the first plot!")
-test_ggplot(2, aes_fail_msg = "Don't forget to fill in the `x` value in the aesthetic with `construction_year` for the first plot!", facet_fail_msg = "Look at the `facet_grid()` layer on the first plot and fill in the same variable for the second plot.")
+test_ggplot(2, aes_fail_msg = "Don't forget to fill in the `x` value in the aesthetic with `construction_year` for the second plot!", facet_fail_msg = "Look at the `facet_grid()` layer on the first plot and fill in the same variable for the second plot.")
 test_error()
 success_msg("Great work! As you can see, the first plot showed us that there were a lot of missing values coded as 0's. After subsetting them out, we could see that there may some differences between the distribution of functional wells and non-functional wells.")
 ```
@@ -490,7 +490,7 @@ Next, you can use the googleVis package to create a map of Tanzania and overlay 
 
 *** =hint
 - Fill in the blanks for ggplot, the rest of the code is ready to produce the scatter plot!
-- Inspect the two plots produced
+- Visually inspect the two plots produced. Perhaps look to see if there are any areas where there are high numbers of non-functional wells.
 
 
 *** =pre_exercise_code
