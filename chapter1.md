@@ -481,7 +481,7 @@ Two other variables that would be worth checking out would be `longitude` and `l
 
 First, you can start off creating a scatter plot for `longitude` and `latitude` to see where the wells are located throughout the country. Then see if there is any visible clustering around certain areas or landmarks by making the color of the points correspond to the values in `status_group`. 
 
-Next, you can use the googleVis package to create a map of Tanzania and overlay the locations of the wells. This will give a more visually appealing representation of the water point locations within the country. There are so many data points within `train` that the plot will take a long time to generate. To make things simpler, you can simply plot the first 1000 points in `train`.
+Next, you can use the googleVis package to create a map of Tanzania and overlay the locations of the wells. This will give a more visually appealing representation of the water point locations within the country. There are so many data points within `train` that the plot will take a long time to generate. To make things simpler, you can plot the first 1000 points in `train` for each plot.
 
 
 *** =instructions 
@@ -507,7 +507,7 @@ library(ggplot2)
 library(googleVis)
 
 # Create scatter plot: latitude vs longitude with color as status_group
-ggplot(subset(train, latitude < 0 & longitude > 0),
+ggplot(subset(train[1:1000,], latitude < 0 & longitude > 0),
     aes(x = ___, y = ___, color = ___)) + 
     geom_point(shape = 1) + 
     theme(legend.position = "top")
@@ -531,9 +531,10 @@ library(ggplot2)
 library(googleVis)
 
 # Create scatter plot: latitude vs longitude with color as status_group
-ggplot(subset(train, latitude < 0 & longitude > 0), aes(x=latitude, y=longitude, color=status_group)) + 
-  geom_point(shape=1) + 
-  theme(legend.position = "top")
+ggplot(subset(train[1:1000,], latitude < 0 & longitude > 0),
+    aes(x = latitude, y = longitude, color = status_group)) + 
+    geom_point(shape = 1) + 
+    theme(legend.position = "top")
 
 # Create a column 'latlong' to input into gvisGeoChart
 train$latlong <- paste(round(train$latitude,2), round(train$longitude, 2), sep=":")
