@@ -84,7 +84,7 @@ test_function("randomForest", args = "x", eval = FALSE,
 test_function("randomForest", args = c("data", "importance", "ntree", "nodesize"), eval = FALSE,,
               incorrect_msg = "Remember to set the `data` argument to `train`, the `importance` argument to `TRUE`, the `ntree` argument to `10` and the `nodesize` argument to 2.")
 
-test_data_frame("model_forest", columns = "terms", eval = FALSE,
+test_data_frame("model_forest", columns = "terms",
                 incorrect_msg = "`my_forest` is not correct. Maybe check the hint on how to call the `randomForest()` function.")
 
 test_function("predict", args = "object", eval = FALSE,
