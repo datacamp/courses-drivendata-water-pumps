@@ -90,7 +90,7 @@ test_data_frame("model_forest", columns = "terms", eval = FALSE,
 test_function("predict", args = "object", eval = FALSE,
               incorrect_msg = "When calling `predict()`, you need to provide two arguments here: the random forest object and the train data set.") 
 
-test_object("pred_forest_train", eval = FALSE,
+test_object("pred_forest_train",
             incorrect_msg = paste("Looks like `pred_forest_train` is calculated incorrectly. Use `model_forest` and `train` as inputs in `predict()`."))
 
 test_output_contains("head(pred_forest_train)", incorrect_msg = "Don't forget to observe the first few rows of your prediction using `head()`.")
