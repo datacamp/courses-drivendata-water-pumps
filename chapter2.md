@@ -347,7 +347,7 @@ names(submission)[1] <- "id"
 test_function("randomForest", args = "x", 
               incorrect_msg = "Make sure to add the new variable `install_3` to the random forest formula.")
 
-test_function("randomForest", args = c("data", "importance", "ntree", "nodesize"),
+test_function("randomForest", args = c("data", "importance", "ntree", "nodesize"), eval = FALSE,
               incorrect_msg = "Remember to keep the `data` argument set to `train`, the `importance` argument to `TRUE`, the `ntree` argument to `10` and the `nodesize` argument to 2.")
 
 test_data_frame("model_forest", columns = "terms",
