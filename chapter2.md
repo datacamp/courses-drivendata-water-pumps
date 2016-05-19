@@ -28,12 +28,12 @@ As you can see, these are variables that you have examined in the previous exerc
 
 *** =instructions
 - Perform a Random Forest and name the model `model_forest`. Use the variables provided in the sample code. Train the model on the data set `train`.
-- Set the number of trees (`ntree`) to grow to 10, make sure you can inspect variable `importance` (set to TRUE), and set `nodesize` to 2.
+- Set the number of trees (`ntree`) to grow to `5`, make sure you can inspect variable `importance` (set to `TRUE`), and set `nodesize` to `2`.
 - Make a prediction (`pred_forest_train`) on the test set using the `predict()` function with inputs of `model_forest` and `train`
 - Inspect the first few rows of `pred_forest_train` using `head()`
 
 *** =hint
-- Remember to set the `data` argument to `train`, the `importance` to `TRUE`, the `ntree` to `10` and the `nodesize` argument to 2.
+- Remember to set the `data` argument to `train`, the `importance` to `TRUE`, the `ntree` to `5` and the `nodesize` argument to 2.
 - Make sure to call `head()` to observe the resulting output from your predictions.
 
 *** =pre_exercise_code
@@ -67,7 +67,7 @@ library(randomForest)
 # Set seed and create a random forest classifier
 set.seed(42)
 model_forest <- randomForest(as.factor(status_group) ~ longitude + latitude + extraction_type_group + quality_group + quantity + waterpoint_type + construction_year,
-                             data = train, importance = TRUE, ntree = 10, nodesize = 2)
+                             data = train, importance = TRUE, ntree = 5, nodesize = 2)
 
 # Use random forest to predict the values in train
 pred_forest_train <- predict(model_forest, train)
@@ -82,7 +82,7 @@ test_function("randomForest", args = "x", eval = FALSE,
               incorrect_msg = "Make sure not to change the variables in the `formula` provided in the sample code!")
 
 test_function("randomForest", args = c("data", "importance", "ntree", "nodesize"), eval = FALSE,,
-              incorrect_msg = "Remember to set the `data` argument to `train`, the `importance` argument to `TRUE`, the `ntree` argument to `10` and the `nodesize` argument to 2.")
+              incorrect_msg = "Remember to set the `data` argument to `train`, the `importance` argument to `TRUE`, the `ntree` argument to `5` and the `nodesize` argument to 2.")
 
 test_data_frame("model_forest", columns = "terms",
                 incorrect_msg = "`my_forest` is not correct. Maybe check the hint on how to call the `randomForest()` function.")
@@ -112,7 +112,7 @@ Based on the output, what was the positive predictive value for the `non functio
 
 *** =instructions
 - 0.87
-- 0.92
+- 0.91
 - 0.81
 - 0.85
   
@@ -302,7 +302,7 @@ load(url("http://s3.amazonaws.com/assets.datacamp.com/production/course_1032/dat
 set.seed(42)
 model_forest <- randomForest(as.factor(status_group) ~ longitude + latitude + extraction_type_group + quantity + waterpoint_type + construction_year + ___,
                              data = train, importance = TRUE,
-                             ntree = 10, nodesize = 2)
+                             ntree = 5, nodesize = 2)
                              
 # Predict using the training values
 pred_forest_train <- predict(model_forest, train)
@@ -325,7 +325,7 @@ names(submission)[1] <- "id"
 set.seed(42)
 model_forest <- randomForest(as.factor(status_group) ~ longitude + latitude + extraction_type_group + quantity + waterpoint_type + construction_year + install_3,
                              data = train, importance = TRUE,
-                             ntree = 10, nodesize = 2)
+                             ntree = 5, nodesize = 2)
                              
 # Predict using the training values
 pred_forest_train <- predict(model_forest, train)
@@ -348,7 +348,7 @@ test_function("randomForest", args = "x",
               incorrect_msg = "Make sure to add the new variable `install_3` to the random forest formula.")
 
 test_function("randomForest", args = c("data", "importance", "ntree", "nodesize"), eval = FALSE,
-              incorrect_msg = "Remember to keep the `data` argument set to `train`, the `importance` argument to `TRUE`, the `ntree` argument to `10` and the `nodesize` argument to 2.")
+              incorrect_msg = "Remember to keep the `data` argument set to `train`, the `importance` argument to `TRUE`, the `ntree` argument to `5` and the `nodesize` argument to 2.")
 
 test_data_frame("model_forest", columns = "terms",
                 incorrect_msg = "`my_forest` is not correct. Make sure to only add `install_3` to the formula. There is no need to change the other inputs to `randomForest()`")
