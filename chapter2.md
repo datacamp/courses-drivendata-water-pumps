@@ -6,14 +6,14 @@ description : "In this chapter we will use a common machine learning technique t
 --- type:NormalExercise xp:100 skills:1 key:040bca4c1f
 ## First Prediction
 
-Let's start making a few predictions using a common machine learning technique called a Random Forest. Although it is a fairly complex technique, it is often a good place to start since it can handle a large number of features. It is fast, and can help quickly estimate which variables are important. 
+Let's start making a few predictions using a common machine learning technique called a Random Forest. Although it is a fairly complex technique, it is often a good place to start since it can handle a large number of features. It is fast, and can help quickly estimate which variables are important.
 
-To create a Random Forest analysis in R, you make use of the `randomForest()` function in the aptly named [`randomForest`](http://www.rdocumentation.org/packages/randomForest) package. 
+To create a Random Forest analysis in R, you make use of the `randomForest()` function in the aptly named [`randomForest`](http://www.rdocumentation.org/packages/randomForest) package.
 
 - First, you provide the `formula`. There is no argument `class` here to inform the function that you're dealing with predicting a categorical variable, so you need to turn `status_group` into a factor with three levels: `as.factor(status_group) ~ ... `
 - The `data` argument takes the `train` data frame.
 - When the `importance` argument is set to `TRUE`, you can inspect variable importance.
-- The `ntree` argument specifies the number of trees to grow. Limit these when having only limited computational power at your disposal. 
+- The `ntree` argument specifies the number of trees to grow. Limit these when having only limited computational power at your disposal.
 
 To end, since Random Forest uses randomization, you set a seed using `set.seed(42)` to assure reproducibility of your results. Once the model is constructed, you can use the prediction function `predict()`.
 
@@ -21,8 +21,11 @@ To end, since Random Forest uses randomization, you set a seed using `set.seed(4
 Here, you will use the following formula as an input to `randomForest`:
 
 ```
-as.factor(status_group) ~ longitude + latitude + extraction_type_group +                                     quality_group + quantity + waterpoint_type +                                       construction_year
+as.factor(status_group) ~ longitude + latitude
+   + extraction_type_group + quality_group
+   + quantity + waterpoint_type + construction_year
 ```
+
 As you can see, these are variables that you have examined in the previous exercises. Now it is time to see how well they work as predictor variables.
 
 
@@ -78,7 +81,7 @@ head(pred_forest_train)
 
 *** =sct
 ```{r eval=FALSE}
-test_function("randomForest", args = "x", eval = FALSE,
+test_function("randomForest", # args = "formula",
               incorrect_msg = "Make sure not to change the variables in the `formula` provided in the sample code!")
 
 test_function("randomForest", args = c("data", "importance", "ntree", "nodesize"), eval = FALSE,,
@@ -88,7 +91,7 @@ test_data_frame("model_forest", columns = "terms",
                 incorrect_msg = "`my_forest` is not correct. Maybe check the hint on how to call the `randomForest()` function.")
 
 test_function("predict", args = "object", eval = FALSE,
-              incorrect_msg = "When calling `predict()`, you need to provide two arguments here: the random forest object and the train data set.") 
+              incorrect_msg = "When calling `predict()`, you need to provide two arguments here: the random forest object and the train data set.")
 
 test_object("pred_forest_train",
             incorrect_msg = paste("Looks like `pred_forest_train` is calculated incorrectly. Use `model_forest` and `train` as inputs in `predict()`."))
@@ -96,7 +99,7 @@ test_object("pred_forest_train",
 test_output_contains("head(pred_forest_train)", incorrect_msg = "Don't forget to observe the first few rows of your prediction using `head()`.")
 
 success_msg("Nice! Let's look at the results a little more closely in the next few exercises.")
-            
+
 ```
 
 --- type:MultipleChoiceExercise xp:50 skills:1,3  key:79f9fe0183
@@ -115,9 +118,9 @@ Based on the output, what was the positive predictive value for the `non functio
 - 0.91
 - 0.81
 - 0.85
-  
+
 *** =hint
-Look at the 'Statistics by Class' area of the of the output. Then find the column for the `non functional` class. 
+Look at the 'Statistics by Class' area of the of the output. Then find the column for the `non functional` class.
 
 *** =pre_exercise_code
 ```{r,eval=FALSE}
@@ -147,16 +150,16 @@ varImpPlot(model_forest)
 
 to assess the predictive utility of the given variables in the model. According to the output, what variable is LEAST important based on the mean decrease in accuracy?
 
-Note: The more the accuracy of the random forest decreases due to the exclusion (or permutation) of a single variable, the more important that variable is deemed. Variables with a large mean decrease in accuracy are more important for classification of the data. 
+Note: The more the accuracy of the random forest decreases due to the exclusion (or permutation) of a single variable, the more important that variable is deemed. Variables with a large mean decrease in accuracy are more important for classification of the data.
 
 *** =instructions
 - quantity
 - construction_year
 - latitude
 - quality_group
-  
+
 *** =hint
-Look at the 'Statistics by Class' area of the of the output. Then find the column for the `non functional` class. 
+Look at the 'Statistics by Class' area of the of the output. Then find the column for the `non functional` class.
 
 *** =pre_exercise_code
 ```{r,eval=FALSE}
@@ -176,7 +179,7 @@ test_mc(correct =4, feedback_msgs = c(msg1, msg2, msg3, msg4))
 --- type:NormalExercise xp:100 skills:1 key:8ba5efa2f7
 ## Adding Features
 
-There are a lot of features in this data set, and many of them will not be useful inputs to commonly for machine learning techniques without some adjustments. That is why this data set is all about feature selection and feature engineering. You have already made a pretty solid prediction only using a handful of variables. Now it is time to go through an example of some feature engineering that can help boost your prediction accuracy. 
+There are a lot of features in this data set, and many of them will not be useful inputs to commonly for machine learning techniques without some adjustments. That is why this data set is all about feature selection and feature engineering. You have already made a pretty solid prediction only using a handful of variables. Now it is time to go through an example of some feature engineering that can help boost your prediction accuracy.
 
 We can examine the variable `installer` by using `summary(train$installer)`. We can see that there are a lot of terms that are likely the same installer, but have differenct names. For example, there are many instances that refer to 'Government': 'Gover', 'GOVER', 'Government', 'Govt' etc. All of these will be considered different factors unless you find a way to aggregate them. One quick (and simplistic) way to do this would be to take the first 3 letters of each factor and make them lower case. Then, we can aggregate the terms that are most frequent and only use those as predictors, putting all other variables into an 'other' category. The sample code provided creates a new variable (called `install_3`) with those parameters.
 
@@ -258,9 +261,9 @@ test$install_3 <- as.factor(test$install_3)
 test_data_frame("train", incorrect_msg = "You do not need to add any code to define `install_3`. Please use the code provided.")
 
 msg <- "Have you correctly coded the table? Do not forget to provide the table that "
-test_output_contains("table(train$install_3, train$status_group)", 
+test_output_contains("table(train$install_3, train$status_group)",
                      incorrect_msg =  paste(msg, "shows the install_3 variable vs the number of water pumps at each functional status."))
-test_output_contains("prop.table(table(train$install_3, train$status_group), margin = 1)", 
+test_output_contains("prop.table(table(train$install_3, train$status_group), margin = 1)",
                      incorrect_msg = paste(msg, "shows the proportion of the install_3 variable vs the number of water pumps at each functional status?"))
 test_error()
 success_msg("Great work! It looks like there are a few installer groups that show a high proportion of non functional wells. In the next exercise you will see how the new variable performs and prepare your data for submission.")
@@ -303,7 +306,7 @@ set.seed(42)
 model_forest <- randomForest(as.factor(status_group) ~ longitude + latitude + extraction_type_group + quantity + waterpoint_type + construction_year + ___,
                              data = train, importance = TRUE,
                              ntree = 5, nodesize = 2)
-                             
+
 # Predict using the training values
 pred_forest_train <- predict(model_forest, train)
 importance(___)
@@ -326,7 +329,7 @@ set.seed(42)
 model_forest <- randomForest(as.factor(status_group) ~ longitude + latitude + extraction_type_group + quantity + waterpoint_type + construction_year + install_3,
                              data = train, importance = TRUE,
                              ntree = 5, nodesize = 2)
-                             
+
 # Predict using the training values
 pred_forest_train <- predict(model_forest, train)
 importance(model_forest)
@@ -344,8 +347,7 @@ names(submission)[1] <- "id"
 
 *** =sct
 ```{r,eval=FALSE}
-test_function("randomForest", args = "x", 
-              incorrect_msg = "Make sure to add the new variable `install_3` to the random forest formula.")
+# test_function("randomForest", args = "formula", incorrect_msg = "Make sure to add the new variable `install_3` to the random forest formula.")
 
 test_function("randomForest", args = c("data", "importance", "ntree", "nodesize"), eval = FALSE,
               incorrect_msg = "Remember to keep the `data` argument set to `train`, the `importance` argument to `TRUE`, the `ntree` argument to `5` and the `nodesize` argument to 2.")
@@ -354,7 +356,7 @@ test_data_frame("model_forest", columns = "terms",
                 incorrect_msg = "`my_forest` is not correct. Make sure to only add `install_3` to the formula. There is no need to change the other inputs to `randomForest()`")
 
 test_function("predict", args = "object", eval = FALSE, index = 2,
-              incorrect_msg = "When calling `predict()`, you need to provide two arguments here: the random forest object and the test data set.") 
+              incorrect_msg = "When calling `predict()`, you need to provide two arguments here: the random forest object and the test data set.")
 
 success_msg("Awesome! Now you can submit the results of the random forest by downloading [this csv](https://s3.amazonaws.com/assets.datacamp.com/production/course_1032/datasets/Submission_Water_Pumps.csv) and visiting the [submission page](https://www.drivendata.org/competitions/7/submissions/) for DriveData. You will see the model has an accuracy of 0.80 on the test set. Keep working and climb that leaderboard!")
 ```
