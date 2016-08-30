@@ -81,7 +81,7 @@ head(pred_forest_train)
 
 *** =sct
 ```{r eval=FALSE}
-test_function("randomForest", # args = "formula",
+test_function("randomForest", args = "formula",
               incorrect_msg = "Make sure not to change the variables in the `formula` provided in the sample code!")
 
 test_function("randomForest", args = c("data", "importance", "ntree", "nodesize"), eval = FALSE,,
@@ -94,7 +94,7 @@ test_function("predict", args = "object", eval = FALSE,
               incorrect_msg = "When calling `predict()`, you need to provide two arguments here: the random forest object and the train data set.")
 
 test_object("pred_forest_train",
-            incorrect_msg = paste("Looks like `pred_forest_train` is calculated incorrectly. Use `model_forest` and `train` as inputs in `predict()`."))
+            incorrect_msg = "Looks like `pred_forest_train` is calculated incorrectly. Use `model_forest` and `train` as inputs in `predict()`.")
 
 test_output_contains("head(pred_forest_train)", incorrect_msg = "Don't forget to observe the first few rows of your prediction using `head()`.")
 
@@ -347,7 +347,7 @@ names(submission)[1] <- "id"
 
 *** =sct
 ```{r,eval=FALSE}
-# test_function("randomForest", args = "formula", incorrect_msg = "Make sure to add the new variable `install_3` to the random forest formula.")
+test_function("randomForest", args = "formula", incorrect_msg = "Make sure to add the new variable `install_3` to the random forest formula.")
 
 test_function("randomForest", args = c("data", "importance", "ntree", "nodesize"), eval = FALSE,
               incorrect_msg = "Remember to keep the `data` argument set to `train`, the `importance` argument to `TRUE`, the `ntree` argument to `5` and the `nodesize` argument to 2.")
