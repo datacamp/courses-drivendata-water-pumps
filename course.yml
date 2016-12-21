@@ -5,3 +5,4 @@ author_bio       : Weston is a member of the DataCamp team and all-around stats 
 university       : DataCamp
 difficulty_level : 2
 time_needed      : 1 hour
+from             : 'r-base-prod:10'
